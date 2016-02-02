@@ -64,7 +64,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         switch(v.getId())
         {
             case R.id.bBooks:
-
+                Intent BooksIntent = new Intent(this, Books.class);
+                startActivity(BooksIntent);
                 break;
 
             case R.id.bWorksheet:
