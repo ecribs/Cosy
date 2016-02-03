@@ -29,6 +29,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         userLocalStore = new UserLocalStore(this);
 
+        books.setOnClickListener(this);
+
 
     }
 
