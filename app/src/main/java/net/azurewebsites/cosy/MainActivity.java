@@ -23,9 +23,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         worksheet = (Button) findViewById(R.id.bWorksheet);
-        books = (Button) findViewById(R.id.bBooks);
-        Class = (Button) findViewById(R.id.Bclass);
-        admin = (Button) findViewById(R.id.Badmin);
+        books = (Button) findViewById(R.id.bbooks);
+        Class = (Button) findViewById(R.id.btimetable);
+        admin = (Button) findViewById(R.id.badmin);
 
         userLocalStore = new UserLocalStore(this);
 
@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     {
         switch(v.getId())
         {
-            case R.id.bBooks:
+            case R.id.bbooks:
                 Intent BooksIntent = new Intent(this, Books.class);
                 startActivity(BooksIntent);
                 break;
@@ -74,11 +74,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 break;
 
-            case R.id.Bclass:
+            case R.id.btimetable:
 
                 break;
 
-            case R.id.Badmin:
+            case R.id.badmin:
 
                 break;
 

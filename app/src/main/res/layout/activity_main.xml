@@ -1,93 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout
-    android:id="@+id/widget0"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/background"
-    >
-    <Button
-        android:layout_width="111dp"
-        android:layout_height="149dp"
-        android:gravity="center"
-        android:background="@drawable/books"
-        android:id="@+id/bBooks"
-        android:layout_gravity="left|center_vertical"
-        android:layout_x="62dp"
-        android:layout_y="240dp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
 
-    <Button
-        android:layout_width="111dp"
-        android:layout_height="149dp"
-        android:background="@drawable/worksheet"
-        android:gravity="center"
-        android:id="@+id/bWorksheet"
-        android:layout_gravity="center"
-        android:layout_x="186dp"
-        android:layout_y="240dp" />
-    <Button
-        android:id="@+id/Bclass"
-        android:layout_width="111dp"
-        android:layout_height="149dp"
-        android:background="@drawable/timetable"
-        android:layout_x="186dp"
-        android:layout_y="62dp"
-        >
-    </Button>
-    <Button
-        android:id="@+id/Badmin"
-        android:layout_width="111dp"
-        android:layout_height="149dp"
-        android:background="@drawable/admin"
-        android:layout_x="62dp"
-        android:layout_y="62dp"
-        >
-    </Button>
-    <TextView
-        android:id="@+id/tvbooks"
-        android:layout_width="wrap_content"
-        android:layout_height="50px"
-        android:text="Books"
-        android:layout_x="100dp"
-        android:layout_y="403dp"
-        android:textColor="#ffff"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal" >
 
-        >
-    </TextView>
-    <TextView
-        android:id="@+id/tvworksheets"
-        android:layout_width="wrap_content"
-        android:layout_height="50px"
-        android:text="worksheets"
+        <Button
+            android:id="@+id/bbooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/books"
+            android:layout_weight="1"
+            />
 
-        android:typeface="sans"
-        android:layout_x="209dp"
-        android:layout_y="403dp"
-        android:textColor="#ffff"
+        <Button
+            android:id="@+id/bWorksheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/worksheet"
+            android:layout_weight="1.0"
+            />
 
-        >
-    </TextView>
-    <TextView
-        android:id="@+id/tvclass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Classroom"
-        android:typeface="sans"
-        android:layout_x="211dp"
-        android:layout_y="215dp"
-        android:textColor="#ffff"
+    </LinearLayout>
 
-        >
-    </TextView>
-    <TextView
-        android:id="@+id/tvadmin"
-        android:layout_width="wrap_content"
-        android:layout_height="27dp"
-        android:text="Admin"
-        android:layout_x="91dp"
-        android:layout_y="215dp"
-        android:textColor="#ffff"
-        >
-    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:orientation="horizontal" >
 
-</AbsoluteLayout>
+        <Button
+            android:id="@+id/btimetable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/timetable"
+            android:layout_weight="1.0"
+            />
+
+        <Button
+            android:id="@+id/badmin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/admin"
+            android:layout_weight="1.0"
+            />
+
+    </LinearLayout>
+</LinearLayout>
