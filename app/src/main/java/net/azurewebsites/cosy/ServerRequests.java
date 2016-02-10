@@ -70,7 +70,7 @@ public class ServerRequests
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
             HttpPost post = new HttpPost(SERVER_ADDRESS
-                    + "servertest.php");
+                    + "test.php");
 
             User returnedUser = null;
 
