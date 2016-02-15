@@ -38,12 +38,7 @@ public class ServerRequests
         progressDialog.setMessage("Please wait...");
     }
 
-    public void GetBooks(User user, GetUserCallback userCallBack)
-    {
-        new GetBooksAsyncTask(user, userCallBack).execute();
 
-
-    }
 
     public void fetchUserDataAsyncTask(User user, GetUserCallback userCallBack)
     {
@@ -78,7 +73,7 @@ public class ServerRequests
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
             HttpPost post = new HttpPost(SERVER_ADDRESS
-                    + "servertest.php");
+                    + "test.php");
 
             User returnedUser = null;
 
@@ -116,74 +111,5 @@ public class ServerRequests
         }
     }
 
-    public class GetBooksAsyncTask extends AsyncTask<Void, Void, Void>
-    {
-        User user;
-        GetUserCallback userCallBack;
 
-        public GetBooksAsyncTask(User user, GetUserCallback userCallBack)
-        {
-            this.user = user;
-            this.userCallBack = userCallBack;
-        }
-
-        protected Void doInBackground(Void... params)
-        {
-            ArrayList<NameValuePair> dataToSend = new ArrayList();
-            dataToSend.add(new BasicNameValuePair("username", user.username));
-
-            HttpParams httpRequestParams = getHttpRequestParams();
-
-            HttpClient client = new DefaultHttpClient(httpRequestParams);
-
-            HttpPost post = new HttpPost(SERVER_ADDRESS + "bookrequest.php");
-
-            String[] BookName;
-            String[] BookSubject;
-            try {
-
-
-                Log.v("posting", "2");
-
-                post.setEntity(new UrlEncodedFormEntity(dataToSend));
-                HttpResponse httpResponse = client.execute(post);
-                Log.v("getting response", "2");
-
-                HttpEntity entity = httpResponse.getEntity();
-
-                Log.v("covnverting to string", "2");
-
-                String result = EntityUtils.toString(entity);
-                JSONObject jsonObject = new JSONObject(result);
-
-                // for getting booknames
-                Log.v("getting a book name", "2");
-
-                JSONArray jsonArray = jsonObject.getJSONArray("Bookname");
-                BookName = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    BookName[i] = jsonArray.getString(i);
-                }
-
-// for getting subjectnames
-                Log.v("we're getting a subject", "2");
-
-                jsonArray = jsonObject.getJSONArray("SubjectName");
-                BookSubject = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    BookSubject[i] = jsonArray.getString(i);
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-
-            
-
-        }
-
-
-    }
 }

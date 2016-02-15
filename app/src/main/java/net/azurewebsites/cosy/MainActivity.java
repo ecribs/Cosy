@@ -38,7 +38,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
         if (authenticate() == true)
         {
@@ -48,7 +49,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private boolean authenticate()
     {
-        if (userLocalStore.getLoggedInUser() == null) {
+        if (userLocalStore.getLoggedInUser() == null)
+        {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
             return false;
