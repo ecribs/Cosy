@@ -43,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onStart();
         if (authenticate() == true)
         {
+
             Log.v( "","hello");
         }
     }

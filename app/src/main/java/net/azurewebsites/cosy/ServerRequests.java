@@ -91,7 +91,6 @@ public class ServerRequests
                 if (jObject.length() != 0) {
                     Log.v("happened", "2");
 
-
                     returnedUser = new User(user.username, user.password);
                 }
 
@@ -113,3 +112,6 @@ public class ServerRequests
 
 
 }
+
+
+

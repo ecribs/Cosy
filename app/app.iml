@@ -91,5 +91,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="com.mysql.jdbc_5.1.5" level="project" />
+    <orderEntry type="module" module-name="com.mysql.jdbc_5.1.5" exported="" />
   </component>
 </module>

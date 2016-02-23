@@ -2,6 +2,7 @@ package net.azurewebsites.cosy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,9 +17,12 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import net.azurewebsites.net.azurewebsites.helper.BookHelper;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -29,151 +33,113 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Books extends Activity
 {
-    public static final int CONNECTION_TIMEOUT = 1000 * 15;
-    public static final String SERVER_ADDRESS = "http://cosy.azurewebsites.net/";
-    public static  String[] BookName;
-    public static  String[] BookSubject;
+
+
     UserLocalStore userLocalStore;
 
+    //public String[] BookName;
+   // public String[] BookSubject;
 
 
 
-    public void GetBooks(User user)
-    {
-
-        new GetBooksAsyncTask(user).execute();
-
-
-    }
-
-    public class GetBooksAsyncTask extends AsyncTask<Void, Void, Void>
-    {
-
-        User user;
-
-        public GetBooksAsyncTask(User user)
-        {
-            this.user = user;
-        }
-
-
-        protected Void doInBackground(Void... params)
-        {
-            ArrayList<NameValuePair> dataToSend = new ArrayList();
-            dataToSend.add(new BasicNameValuePair("username", user.username));
-
-
-            HttpParams httpRequestParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpRequestParams,
-                    CONNECTION_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(httpRequestParams,
-                    CONNECTION_TIMEOUT);
-
-            HttpClient client = new DefaultHttpClient(httpRequestParams);
-
-            HttpPost post = new HttpPost(SERVER_ADDRESS + "bookrequest.php");
-
-            try {
-
-
-                Log.v("posting", "2");
-
-                post.setEntity(new UrlEncodedFormEntity(dataToSend));
-                HttpResponse httpResponse = client.execute(post);
-                Log.v("getting response", "2");
-
-                HttpEntity entity = httpResponse.getEntity();
-
-                Log.v("covnverting to string", "2");
-
-                String result = EntityUtils.toString(entity);
-                JSONObject jsonObject = new JSONObject(result);
-
-                // for getting booknames
-                Log.v("getting a book name", "2");
-
-                JSONArray jsonArray = jsonObject.getJSONArray("Bookname");
-                BookName = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    BookName[i] = jsonArray.getString(i);
-                }
-
-// for getting subjectnames
-                Log.v("we're getting a subject", "2");
-
-                jsonArray = jsonObject.getJSONArray("SubjectName");
-                BookSubject = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    BookSubject[i] = jsonArray.getString(i);
-                }
-
-
-                //return BookName, BookSubject};
-
-
-            }
-                catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-
-            return null;
-        }
-
-        protected void onPostExecute()
-        {
-            if(BookName==null)
-            {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Books.this);
-                dialogBuilder.setMessage("ERROR: Books couldn't download");
-                dialogBuilder.setPositiveButton("Try Again", null);
-                dialogBuilder.show();
-
-
-            }
 
 
 
-        }
 
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        userLocalStore = new UserLocalStore(this);
+        JSONObject jsonObject = null;
 
+
+        try
+        {
+
+             jsonObject = new getBooks().execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        final String[] BookName;
+        String[] BookSubject;
+        Log.v("converting:", "getting books");
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = jsonObject.getJSONArray("Bookname");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        BookName = new String[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++)
+        {
+            try {
+                BookName[i] = jsonArray.getString(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.v("here is our book name:", BookName[2]);
+
+        // for getting subjectnames
+        Log.v("we're getting a subject", "we're getting a subject");
+
+        try {
+            jsonArray = jsonObject.getJSONArray("SubjectName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        BookSubject = new String[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++)
+        {
+            try {
+                BookSubject[i] = jsonArray.getString(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.v("here is the subject:", BookSubject[1]);
+
+
+
+        setContentView(R.layout.activity_books);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_books);
-        User user = userLocalStore.getLoggedInUser();
-
-        GetBooks(user);
+       // User user = userLocalStore.getLoggedInUser();
 
 
+       // String[] BookName = {"hello"};
+       // String[] BookSubject= {"from the other side"};
 
-        // String[] books = {"matter of fact","AliveO", "Gaeilge" };
-        //String[] subjects = {"science", "religion", "irish"};
-        ListAdapter BookAdapter = new BookAdapter(this, BookName, BookSubject);
+
+
+        ListAdapter BookAdapter = new BookAdapter(this,BookName, BookSubject);
         ListView BookList = (ListView) findViewById(R.id.booklist);
         BookList.setAdapter(BookAdapter);
 
         BookList.setOnItemClickListener
                 (
-                        new AdapterView.OnItemClickListener()
-                        {
+                        new AdapterView.OnItemClickListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                            {
-                                String url = "https://cosy.azurewebsites.net/Books/Books/" + BookName + ".pdf";
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String url = "http://cosy.azurewebsites.net/Books/" + BookName[position]+ ".pdf";
                                 Intent i = new Intent(Intent.ACTION_VIEW);
                                 i.setData(Uri.parse(url));
                                 startActivity(i);
@@ -186,6 +152,135 @@ public class Books extends Activity
     }
 
 
+
+
+
+
+    private class getBooks extends AsyncTask<Void, Void, JSONObject>
+    {
+        //ResultSet Book;
+
+        private ProgressDialog pdialog;
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.d("","we are executing");
+            pdialog = new ProgressDialog(Books.this);
+            pdialog.setCancelable(false);
+            pdialog.setMessage("Getting Books...");
+            showdialog();
+
+
+
+        }
+
+
+        @Override
+        protected JSONObject doInBackground(Void... params)
+
+        {
+            String result = null;
+            JSONObject jsonObject = null;
+
+            try
+            {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/bookrequest.php");
+
+                User user = userLocalStore.getLoggedInUser();
+
+
+                String username = user.username;
+                Log.v("user logged in is:",username);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair( "username", username ));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+
+                Log.d("","got a response");
+
+                result = EntityUtils.toString(entity);
+                Log.v("",result);
+                jsonObject = new JSONObject(result);
+               // JSONObject jsonObject = obj.getJSONObject(0);
+
+
+
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+            //BookHelper bh = new BookHelper();
+            //Book =  bh.getAllDetails();
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject)
+        {
+
+            hidedialog();
+        }
+/*
+            ArrayList<String> names = new ArrayList<String>();
+            ArrayList<String> subjects = new ArrayList<String>();
+            try
+            {
+
+                while (Book.next()) {
+                    names.add(Book.getString(1));
+                    subjects.add(Book.getString(2));
+                }
+
+                // finally turn the array lists into arrays - if really needed
+                BookName = new String[names.size()];
+                BookName = names.toArray(BookName);
+
+                BookSubject = new String[subjects.size()];
+                BookSubject = subjects.toArray(BookSubject);
+
+            } catch (SQLException e)
+            {
+                Log.e("", e.getMessage());
+
+            }*/
+
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.show();
+
+            }
+
+        }
+
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.dismiss();
+
+            }
+
+        }
+
+    }
+
+
     public boolean onCreateOptionsMenu(Menu menu)
     {
 
@@ -195,14 +290,11 @@ public class Books extends Activity
 
 
 
-
-
-
-
-
         return true;
 
     }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item)
     {

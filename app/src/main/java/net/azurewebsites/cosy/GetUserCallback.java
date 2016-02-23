@@ -6,3 +6,4 @@ interface GetUserCallback
 
      void done(User returnedUser);
 }
+

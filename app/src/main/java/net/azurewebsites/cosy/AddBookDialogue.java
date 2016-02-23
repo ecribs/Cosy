@@ -38,10 +38,12 @@ public class AddBookDialogue extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.browse:
-                c.finish();
+                //c.finish();
+
                 break;
             case R.id.submit:
-                dismiss();
+                //ftp
+               // dismiss();
                 break;
             default:
                 break;
