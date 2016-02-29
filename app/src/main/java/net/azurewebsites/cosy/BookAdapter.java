@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.azurewebsites.net.azurewebsites.helper.BookHelper;
 
 import java.io.InputStream;
 import java.sql.ResultSet;

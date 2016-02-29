@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:anroid="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="net.azurewebsites.cosy.AddWorksheet"
+    android:background="@drawable/background"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Enter in WorkSheet Details:"
+        android:id="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="63dp"
+        android:textColor="#ffffff" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/WorksheetName"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="#aaffc7"
+        android:padding="5dp"
+        android:text="Enter a worksheet title" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/Num_Q"
+        android:layout_below="@+id/WorksheetName"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/WorksheetName"
+        android:background="#4fff91"
+        android:padding="5dp"
+        android:text="How many questions would you like?" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Q_Type"
+        android:layout_below="@+id/Num_Q"
+        android:layout_centerHorizontal="true"
+        android:entries="@array/Q_type"
+        android:background="#75e6ff"
+        android:spinnerMode="dialog" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/W_Date"
+        android:layout_below="@+id/Q_Type"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/Q_Type"
+        android:background="#6abeff"
+        android:padding="5dp"
+        android:text="Enter a date to set this worksheet for" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/INSERT"
+        android:background="#6370ff"
+        android:layout_below="@+id/W_Date"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp" />
+
+</RelativeLayout>

@@ -25,6 +25,38 @@
             android:name=".Books"
             android:label="@string/title_activity_books" >
         </activity>
+        <activity
+            android:name=".worksheet_Subjects"
+            android:label="@string/title_activity_worksheet__subjects" >
+        </activity>
+        <activity
+            android:name=".Worksheet_Topic"
+            android:label="@string/title_activity_worksheet__topic" >
+        </activity>
+        <activity
+            android:name=".Worksheet"
+            android:label="@string/title_activity_worksheet" >
+        </activity>
+        <activity
+            android:name=".AddSubject"
+            android:label="AddSubject" >
+        </activity>
+        <activity
+            android:name=".AddTopic"
+            android:label="@string/title_activity_add_topic" >
+        </activity>
+        <activity
+            android:name="net.azurewebsites.AddWorksheet"
+            android:label="@string/title_activity_add_worksheet" >
+        </activity>
+        <activity
+            android:name=".AddWorksheet"
+            android:label="@string/title_activity_add_worksheet" >
+        </activity>
+        <activity
+            android:name=".Questions"
+            android:label="@string/title_activity_questions" >
+        </activity>
     </application>
 
 </manifest>

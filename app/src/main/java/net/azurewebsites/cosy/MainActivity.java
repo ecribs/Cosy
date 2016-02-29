@@ -30,6 +30,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         userLocalStore = new UserLocalStore(this);
 
         books.setOnClickListener(this);
+        worksheet.setOnClickListener(this);
+
 
 
     }
@@ -74,7 +76,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
 
             case R.id.bWorksheet:
-
+                Intent WorksheetIntent = new Intent(this, worksheet_Subjects.class);
+                startActivity(WorksheetIntent);
                 break;
 
             case R.id.btimetable:

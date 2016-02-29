@@ -5,5 +5,7 @@
     <item android:id="@+id/addbook"
           android:title="Add a book"
           android:orderInCategory="1"
-          app:showAsAction="never"/>
+            android:icon="@drawable/ic_add_circle_white_24dp"
+
+        app:showAsAction="always"/>
 </menu>

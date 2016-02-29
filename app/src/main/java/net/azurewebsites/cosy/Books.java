@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import net.azurewebsites.net.azurewebsites.helper.BookHelper;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -47,7 +46,8 @@ import java.util.concurrent.ExecutionException;
 public class Books extends Activity
 {
 
-
+    String[] BookName= {};
+    String[] BookSubject= {};
     UserLocalStore userLocalStore;
 
     //public String[] BookName;
@@ -76,8 +76,7 @@ public class Books extends Activity
             e.printStackTrace();
         }
 
-        final String[] BookName;
-        String[] BookSubject;
+
         Log.v("converting:", "getting books");
         JSONArray jsonArray = null;
         try {
@@ -222,8 +221,7 @@ public class Books extends Activity
             {
                 e.printStackTrace();
             }
-            //BookHelper bh = new BookHelper();
-            //Book =  bh.getAllDetails();
+
             return jsonObject;
         }
 
@@ -233,29 +231,7 @@ public class Books extends Activity
 
             hidedialog();
         }
-/*
-            ArrayList<String> names = new ArrayList<String>();
-            ArrayList<String> subjects = new ArrayList<String>();
-            try
-            {
 
-                while (Book.next()) {
-                    names.add(Book.getString(1));
-                    subjects.add(Book.getString(2));
-                }
-
-                // finally turn the array lists into arrays - if really needed
-                BookName = new String[names.size()];
-                BookName = names.toArray(BookName);
-
-                BookSubject = new String[subjects.size()];
-                BookSubject = subjects.toArray(BookSubject);
-
-            } catch (SQLException e)
-            {
-                Log.e("", e.getMessage());
-
-            }*/
 
 
         protected void showdialog()
@@ -285,10 +261,6 @@ public class Books extends Activity
     {
 
         getMenuInflater().inflate(R.menu.menu_books, menu);
-
-
-
-
 
         return true;
 
