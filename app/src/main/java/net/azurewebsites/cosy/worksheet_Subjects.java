@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,6 +43,8 @@ public class worksheet_Subjects extends ActionBarActivity
         UserLocalStore userLocalStore;
         String[] SubjectName= {};
         int[] SubjectID={};
+        JSONObject jsonObject = null;
+
 
 
 
@@ -49,7 +53,6 @@ public class worksheet_Subjects extends ActionBarActivity
         {
 
             userLocalStore = new UserLocalStore(this);
-            JSONObject jsonObject = null;
             JSONArray jsonArray = null;
             String nothing = "Nothing to display";
 
@@ -134,6 +137,8 @@ public class worksheet_Subjects extends ActionBarActivity
             ListAdapter Subjectadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, SubjectName);
             ListView SubjectList = (ListView) findViewById(R.id.SubjectList);
             SubjectList.setAdapter(Subjectadapter);
+            registerForContextMenu(SubjectList);
+
 
             SubjectList.setOnItemClickListener
                     (
@@ -150,15 +155,11 @@ public class worksheet_Subjects extends ActionBarActivity
                                 }
                             }
 
-                    );
+                    );}
 
 
 
-
-
-        }
-
-    @Override
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_worksheet__subjects, menu);
@@ -275,6 +276,168 @@ public class worksheet_Subjects extends ActionBarActivity
             }
 
         }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v,
+                                        ContextMenu.ContextMenuInfo menuInfo)
+        {
+
+            if (v.getId()==R.id.SubjectList)
+            {
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+                menu.setHeaderTitle(SubjectName[info.position]);
+
+
+                menu.add(0, v.getId(), 0, "Edit");
+                menu.add(0, v.getId(), 0, "Delete");
+                menu.add(0, v.getId(), 0, "Cancel");
+            }
+        }
+        @Override
+        public boolean onContextItemSelected(MenuItem item)
+        {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+            String listitem=  SubjectName[info.position];
+
+            if (item.getTitle() == "Delete") {
+                try
+                {
+
+                    jsonObject = new deletesubject().execute(listitem).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e)
+                {
+                    e.printStackTrace();
+                }
+
+                Intent i = new Intent(getApplicationContext(), worksheet_Subjects.class);
+                startActivity(i);
+            }
+            else if (item.getTitle() == "Edit")
+            {
+                Intent i = new Intent(getApplicationContext(), EditSubject.class);
+                i.putExtra("SubjectName", listitem);
+                startActivity(i);
+            }
+            else if (item.getTitle() == "Action 3") {
+                Toast.makeText(this, "Action 3 invoked", Toast.LENGTH_SHORT).show();
+            } else {
+                return false;
+            }
+            return true;
+        }
+
+
+        private class deletesubject extends AsyncTask<String, Void, JSONObject>
+        {
+            //ResultSet Book;
+
+            private ProgressDialog pdialog;
+
+            @Override
+            protected void onPreExecute()
+            {
+                Log.d("", "we are executing");
+                pdialog = new ProgressDialog(worksheet_Subjects.this);
+                pdialog.setCancelable(false);
+                pdialog.setMessage("Getting Subjects...");
+                showdialog();
+
+
+
+            }
+
+
+            @Override
+            protected JSONObject doInBackground(String... params)
+
+            {
+                String item= params[0];
+                User user = userLocalStore.getLoggedInUser();
+                String username = user.username;
+
+
+
+                String result = null;
+                JSONObject jsonObject = null;
+
+                try
+                {
+                    HttpClient httpclient = new DefaultHttpClient();
+                    HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/deletesubject.php");
+
+
+
+                    Log.v("user logged in is:",username);
+
+                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                    nameValuePairs.add(new BasicNameValuePair( "SubjectName", item ));
+                    nameValuePairs.add(new BasicNameValuePair("Username", username ));
+
+                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                    HttpResponse response = httpclient.execute(httppost);
+                    HttpEntity entity = response.getEntity();
+
+                    Log.d("","got a response");
+
+                    result = EntityUtils.toString(entity);
+                    Log.v("",result);
+                    jsonObject = new JSONObject(result);
+
+
+
+                }
+                catch (ClientProtocolException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+                return jsonObject;
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject jsonObject)
+            {
+
+                hidedialog();
+            }
+
+
+
+            protected void showdialog()
+            {
+                if(pdialog.isShowing())
+                {
+                    pdialog.show();
+
+                }
+
+            }
+
+            private void hidedialog()
+            {
+                if(pdialog.isShowing())
+                {
+                    pdialog.dismiss();
+
+                }
+
+            }
+
+        }
+
+
+        
 
 
 }

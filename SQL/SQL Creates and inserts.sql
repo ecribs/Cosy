@@ -1,51 +1,35 @@
-Create Table Classes 
-(
-	ClassID VARCHAR(10) Primary Key NOT NULL,
-	Num_Students INT NOT NULL
-);
 
 
-Create Table Users 
-(
-	Username VARCHAR(20) Primary key NOT NULL,
-	Password VARCHAR(10) NOT NULL,
-	ClassID VARCHAR(10) FOREIGN KEY REFERENCES Classes(ClassID) NOT NULL,
-	Role VARCHAR(10) NOT NULL
-);
-
-Create TABLE Subjects
-(
-	SubjectID INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	SubjectName VARCHAR(20) NOT NULL,
-	ClassID VARCHAR(10) FOREIGN KEY REFERENCES Classes(ClassID) NOT NULL
+Create TABLE Subjects (
+    SubjectID INT PRIMARY KEY NOT NULL IDENTITY(1, 1),
+    SubjectName VARCHAR(20) NOT NULL,
+    ClassID VARCHAR(10) NOT NULL
+        FOREIGN KEY REFERENCES Classes(ClassID) ON DELETE CASCADE
 );
 
 Create TABLE Books
 ( 
 	Bookname VARCHAR(100) PRIMARY KEY,
-	subjectID INT FOREIGN KEY REFERENCES Subjects(SubjectID)
+	subjectID INT FOREIGN KEY REFERENCES Subjects(SubjectID) on DELETE CASCADE
 );
 
-Create TABLE Topic
+CREATE TABLE Topic
 ( 
-	TopicID INT PRIMARY KEY NOT NULL IDENTITY(1,1),
-	TopicName VARCHAR(100),
-	SubjectID INT FOREIGN KEY REFERENCES Subjects(SubjectID)
-); 
-
-Create Table Worksheet
-(
-WorksheetName varchar(100) PRIMARY KEY,
-TopicID INT Foreign KEY References Topic(TopicID),
-Num_Q INT NOT NULL,
-W_Type varchar(30)
+    TopicID INT PRIMARY KEY NOT NULL IDENTITY(1,1),
+    TopicName VARCHAR(100),
+    SubjectID INT, 
+    CONSTRAINT FK_Subjects_Topic FOREIGN KEY (SubjectID)
+        REFERENCES Subjects (SubjectID) 
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
 );
+
 
 Create Table Worksheet
 (
 WorksheetID int PRIMARY KEY IDENTITY(1,1),
 WorksheetName varchar(100),
-TopicID INT Foreign KEY References Topic(TopicID),
+TopicID INT Foreign KEY References Topic(TopicID) ON DELETE CASCADE, 
 Num_Q INT NOT NULL,
 W_Type varchar(30),
 W_Date Date
@@ -53,7 +37,7 @@ W_Date Date
 
 Create TABLE Worksheet_Questions
 (
-	WorksheetID INT  NOT NULL Foreign KEY References Worksheet(WorksheetID),
+	WorksheetID INT  NOT NULL Foreign KEY References Worksheet(WorksheetID) ON DELETE CASCADE,
 	Question_Num INT NOT NULL,
 	Question VARCHAR(200) NOT NULL,
 	Answer VARCHAR(200),
@@ -124,9 +108,6 @@ insert into Topic values( 'Islam', 5);
 insert into Topic values( 'Morals', 5);
 insert into Topic values( 'Meditation', 5);
 insert into Topic values( 'Ethics', 5);
-
-
-
 
 
 

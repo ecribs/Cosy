@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,6 +21,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,23 +37,27 @@ public class AddWorksheet extends ActionBarActivity
     EditText ETWorksheetName, ETNum_Q, ETDate;
     Spinner SQ_Type;
     UserLocalStore userLocalStore;
+    JSONObject jsonObject = null;
+    JSONArray jsonArray = null;
+    int[] WorksheetID;
+
 
 
     private static class Stuff
     {
         String WorksheetName, W_Type;
-        int Num_Q, TopicID;
+        int Num_Q, TopicID,WorksheetID;
         Date W_Date;
 
 
-        Stuff(String WorksheetName,String W_Type, int Num_Q, int TopicID, Date W_Date )
+        Stuff(String WorksheetName,String W_Type, int Num_Q, int TopicID, Date W_Date, int WorksheetID )
         {
             this.WorksheetName = WorksheetName;
             this.W_Type = W_Type;
             this.Num_Q = Num_Q;
             this.TopicID = TopicID;
             this.W_Date = W_Date;
-
+            this.WorksheetID= WorksheetID;
 
         }
     }
@@ -86,21 +90,44 @@ public class AddWorksheet extends ActionBarActivity
 
 
 
-                Stuff params = new Stuff(WorkshetName, W_Type, TopicID, Num_Q, W_Date);
-                InsertWorksheet InsertWorksheet = new InsertWorksheet();
+                Stuff params = new Stuff(WorkshetName, W_Type, Num_Q, TopicID, W_Date,0);
+
+
                 try {
-                    InsertWorksheet.execute(params).get();
+                    jsonObject = new InsertWorksheet().execute(params).get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
 
+                try {
 
+                    try {
+                        jsonArray = jsonObject.getJSONArray("WorksheetID");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.v("nothing", "nothing");
+                    }
+                    assert jsonArray != null;
+                    WorksheetID = new int[jsonArray.length()];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            WorksheetID[i] = jsonArray.getInt(i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.v("nothing", "nothing");
 
+                        }
+                    }
+                } catch (Exception e)
+                {
+                    Log.v("nothing", "nothing");
+                }
 
+                Stuff Questions = new Stuff(WorkshetName, W_Type, Num_Q, TopicID, W_Date, WorksheetID[0]);
 
-                gotoNewWorksheet(params);
+                gotoNewWorksheet(Questions);
 
 
             }
@@ -114,10 +141,16 @@ public class AddWorksheet extends ActionBarActivity
 
     protected void gotoNewWorksheet(Stuff items)
     {
-        Intent intent = new Intent(this, Worksheet.class);
+        String[] questionarray = new String[0];
+        String[] answerarray = new String[0];
+
+        Intent intent = new Intent(this, Questions.class);
         Bundle extras = new Bundle();
-        extras.putInt("TopicID",items.TopicID);
-        //extras.putString("EXTRA_PASSWORD","my_password");
+        extras.putInt("TopicID", items.TopicID);
+        extras.putInt("WorksheetID", items.WorksheetID);
+        extras.putInt("Num_Q", items.Num_Q);
+
+
         intent.putExtras(extras);
         startActivity(intent);
 
@@ -125,7 +158,7 @@ public class AddWorksheet extends ActionBarActivity
     }
 
 
-    private class InsertWorksheet extends AsyncTask<Stuff, Void, Void>
+    private class InsertWorksheet extends AsyncTask<Stuff, Void, JSONObject>
     {
         //ResultSet Book;
 
@@ -146,11 +179,11 @@ public class AddWorksheet extends ActionBarActivity
 
 
         @Override
-        protected Void doInBackground(Stuff... params)
+        protected JSONObject doInBackground(Stuff... params)
 
         {
-            String result;
-            JSONObject jsonObject;
+            String result = null;
+            JSONObject jsonObject = null;
 
 
             String WorksheetName = params[0].WorksheetName;
@@ -205,11 +238,11 @@ public class AddWorksheet extends ActionBarActivity
                 e.printStackTrace();
             }
 
-            return null;
+            return jsonObject;
         }
 
         @Override
-        protected void onPostExecute(Void blah)
+        protected void onPostExecute(JSONObject blah)
         {
             hidedialog();
 

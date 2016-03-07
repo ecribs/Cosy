@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Cosy.iml" filepath="$PROJECT_DIR$/Cosy.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commons-net-2.2-ftp/commons-net-2.2-ftp.iml" filepath="$PROJECT_DIR$/commons-net-2.2-ftp/commons-net-2.2-ftp.iml" />
     </modules>
   </component>
 </project>

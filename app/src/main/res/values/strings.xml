@@ -18,4 +18,5 @@
         <item>True/False</item>
     </string-array>
     <string name="title_activity_questions">Questions</string>
+    <string name="title_activity_add_book">AddBook</string>
 </resources>

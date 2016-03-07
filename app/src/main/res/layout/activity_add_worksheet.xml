@@ -32,7 +32,7 @@
         android:layout_alignParentEnd="true"
         android:background="#aaffc7"
         android:padding="5dp"
-        android:text="Enter a worksheet title" />
+        android:text="TESTS" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_alignEnd="@+id/WorksheetName"
         android:background="#4fff91"
         android:padding="5dp"
-        android:text="How many questions would you like?" />
+        android:text="3" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_alignEnd="@+id/Q_Type"
         android:background="#6abeff"
         android:padding="5dp"
-        android:text="Enter a date to set this worksheet for" />
+        android:text="2016-03-01" />
 
     <Button
         android:layout_width="wrap_content"

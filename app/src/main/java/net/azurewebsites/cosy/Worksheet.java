@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import org.apache.http.HttpEntity;
@@ -128,10 +131,12 @@ public class Worksheet extends ActionBarActivity
 
 
 
-
         ListAdapter WorksheetAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, WorksheetName);
         ListView WorksheetList = (ListView) findViewById(R.id.WorksheetList);
         WorksheetList.setAdapter(WorksheetAdapter);
+
+        registerForContextMenu(WorksheetList);
+
 
     }
 
@@ -148,7 +153,6 @@ public class Worksheet extends ActionBarActivity
         Intent i = new Intent(getApplicationContext(), AddWorksheet.class);
         i.putExtra("TopicID", TopicID);
         startActivity(i);
-
         return true;
     }
 
@@ -252,6 +256,33 @@ public class Worksheet extends ActionBarActivity
         }
 
     }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Context Menu");
+        menu.add(0, v.getId(), 0, "Action 1");
+        menu.add(0, v.getId(), 0, "Action 2");
+        menu.add(0, v.getId(), 0, "Action 3");
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == "Action 1") {
+            Toast.makeText(this, "Action 1 invoked", Toast.LENGTH_SHORT).show();
+        } else if (item.getTitle() == "Action 2") {
+            Toast.makeText(this, "Action 2 invoked", Toast.LENGTH_SHORT).show();
+        } else if (item.getTitle() == "Action 3") {
+            Toast.makeText(this, "Action 3 invoked", Toast.LENGTH_SHORT).show();
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+
 
 
 

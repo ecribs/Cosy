@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/ETQuestion"
         android:background="#ffff33"
-        android:layout_marginTop="158dp"
         android:paddingBottom="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/TVQuestion"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -21,9 +21,12 @@
         android:text="NEXT"
         android:id="@+id/QNEXT"
         android:background="#5199ff"
-        android:layout_marginTop="39dp"
-        android:layout_below="@+id/ETAnswer"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="77dp"
+        android:minHeight="100dp"
+        android:maxWidth="100dp"
+        android:layout_toEndOf="@+id/TVQuestion" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,20 +35,20 @@
         android:text="Question: "
         android:id="@+id/TVQuestion"
         android:textColor="#ffffff"
+        android:layout_marginTop="97dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_marginTop="79dp" />
+        android:layout_alignStart="@+id/textView4" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ETAnswer"
-        android:layout_below="@+id/ETQuestion"
-        android:layout_marginTop="49dp"
-        android:layout_alignParentEnd="true"
+        android:background="#ffff33"
+        android:layout_below="@+id/textView4"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:paddingBottom="50dp"
-        android:background="#ffff33"/>
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,18 +56,21 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Answer"
         android:id="@+id/textView4"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:layout_below="@+id/ETQuestion"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Previous"
-        android:id="@+id/QPrevious"
-        android:layout_alignTop="@+id/QNEXT"
-        android:layout_alignParentStart="true"
-        android:background="#5199ff" />
+        android:text="SUBMIT"
+        android:id="@+id/QSUBMIT"
+        android:background="#5199ff"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/textView4"
+        android:maxWidth="100dp"
+        android:minHeight="100dp"
+        android:layout_alignTop="@+id/QNEXT" />
 
 
 </RelativeLayout>

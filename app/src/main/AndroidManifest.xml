@@ -3,6 +3,8 @@
     package="net.azurewebsites.cosy" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -20,22 +22,22 @@
         </activity>
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" />
+            android:label="Login" />
         <activity
             android:name=".Books"
-            android:label="@string/title_activity_books" >
+            android:label="Books" >
         </activity>
         <activity
             android:name=".worksheet_Subjects"
-            android:label="@string/title_activity_worksheet__subjects" >
+            android:label="Worksheet Subjects " >
         </activity>
         <activity
             android:name=".Worksheet_Topic"
-            android:label="@string/title_activity_worksheet__topic" >
+            android:label="Worksheet topics" >
         </activity>
         <activity
             android:name=".Worksheet"
-            android:label="@string/title_activity_worksheet" >
+            android:label="Worksheets" >
         </activity>
         <activity
             android:name=".AddSubject"
@@ -43,19 +45,25 @@
         </activity>
         <activity
             android:name=".AddTopic"
-            android:label="@string/title_activity_add_topic" >
-        </activity>
-        <activity
-            android:name="net.azurewebsites.AddWorksheet"
-            android:label="@string/title_activity_add_worksheet" >
+            android:label="Add Topic" >
         </activity>
         <activity
             android:name=".AddWorksheet"
-            android:label="@string/title_activity_add_worksheet" >
+            android:label="Add Worksheet" >
         </activity>
+
         <activity
             android:name=".Questions"
-            android:label="@string/title_activity_questions" >
+            android:label="Add Questions" >
+        </activity>
+        <activity
+            android:name=".AddBook"
+            android:label="Add Book" >
+        </activity>
+
+        <activity
+            android:name=".EditSubject"
+            android:label="Edit Subject" >
         </activity>
     </application>
 

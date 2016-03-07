@@ -259,19 +259,21 @@ public class Books extends Activity
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
-
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_books, menu);
-
         return true;
-
     }
 
 
 
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        int TopicID = 5;
+        Intent i = new Intent(getApplicationContext(), AddBook.class);
+        startActivity(i);
 
-
+        return true;
+/*
         switch(item.getItemId())
         {
             case R.id.addbook:
@@ -293,8 +295,8 @@ public class Books extends Activity
             }
 
         }
-        return true;
 
+*/
 
     }
 
