@@ -55,7 +55,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener
                 else
                 {
                     User user = new User(username, password);
-
                     authenticate(user);
                     break;
                 }

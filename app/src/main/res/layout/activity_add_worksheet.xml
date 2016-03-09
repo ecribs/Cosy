@@ -50,7 +50,7 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Q_Type"
+        android:id="@+id/S_Ques"
         android:layout_below="@+id/Num_Q"
         android:layout_centerHorizontal="true"
         android:entries="@array/Q_type"
@@ -63,12 +63,12 @@
         android:inputType="date"
         android:ems="10"
         android:id="@+id/W_Date"
-        android:layout_below="@+id/Q_Type"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/Q_Type"
         android:background="#6abeff"
         android:padding="5dp"
-        android:text="2016-03-01" />
+        android:text="2016-03-01"
+        android:layout_below="@+id/S_Ques"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/S_Ques" />
 
     <Button
         android:layout_width="wrap_content"

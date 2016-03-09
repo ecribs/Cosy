@@ -21,6 +21,9 @@ public class UserLocalStore
         SharedPreferences.Editor userLocalDatabaseEditor = userLocalDatabase.edit();
         userLocalDatabaseEditor.putString("username", user.username);
         userLocalDatabaseEditor.putString("password", user.password);
+        userLocalDatabaseEditor.putString("ClassID", user.ClassID);
+        userLocalDatabaseEditor.putString("Role", user.Role);
+
         userLocalDatabaseEditor.commit();
     }
 
@@ -46,9 +49,12 @@ public class UserLocalStore
 
         String username = userLocalDatabase.getString("username", "");
         String password = userLocalDatabase.getString("password", "");
+        String ClassID = userLocalDatabase.getString("ClassID", "");
+        String Role = userLocalDatabase.getString("Role", "");
 
 
-        User user = new User(username, password);
+
+        User user = new User(username, password, ClassID, Role);
         return user;
     }
 

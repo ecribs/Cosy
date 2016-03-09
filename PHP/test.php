@@ -33,6 +33,9 @@ if( $conn )
 		{
 				$username1 = urlencode($row['Username']);
 				$password1= urlencode($row['Password']);
+				$ClassID = urlencode($row['ClassID']);
+				$Role = urlencode($row['Role']);
+
 		}
 	
 		if($username1==null || $password==null)
@@ -47,6 +50,9 @@ if( $conn )
 
 			$Users["username"] = $username1;
 			$Users["password"] = $password1;
+			$Users["ClassID"] = $ClassID;
+			$Users["Role"] = $Role;
+
 			
 			echo urldecode(json_encode($Users));		
 		}

@@ -71,7 +71,7 @@ public class AddWorksheet extends ActionBarActivity
         ETWorksheetName = (EditText) findViewById(R.id.WorksheetName);
         ETNum_Q = (EditText) findViewById(R.id.Num_Q);
         ETDate = (EditText) findViewById(R.id.W_Date);
-        SQ_Type = (Spinner) findViewById( R.id.Q_Type);
+        SQ_Type = (Spinner) findViewById( R.id.S_Ques);
         SUBMIT = (Button) findViewById(R.id.INSERT);
 
         Bundle subjectdata = getIntent().getExtras();

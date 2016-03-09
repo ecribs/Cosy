@@ -4,16 +4,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="net.azurewebsites.cosy.AddBook">
+    tools:context="net.azurewebsites.cosy.AddBook"
+    android:background="@drawable/background">
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Browse"
+        android:text="Browse Files"
         android:id="@+id/Browse"
+        android:background="#5199ff"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="41dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,9 +24,58 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="FILENAME"
         android:id="@+id/ETFILEPATH"
-        android:layout_alignBottom="@+id/Browse"
-        android:layout_alignTop="@+id/Browse"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/Browse" />
+        android:layout_above="@+id/imgbrowse"
+        android:layout_toEndOf="@+id/Browse"
+        android:textColor="#ffffff" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse Image"
+        android:id="@+id/imgbrowse"
+        android:background="#5199ff"
+        android:layout_below="@+id/Browse"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivbook"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:layout_below="@+id/ETFILEPATH"
+        android:layout_alignStart="@+id/Upload" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ETBOOKNAME"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:hint="Enter the book name"
+        android:textColor="#010101"
+        android:textColorHint="#010101"
+        android:background="#ffff33" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Book"
+        android:id="@+id/Upload"
+        android:layout_marginTop="52dp"
+        android:background="#5199ff"
+        android:layout_below="@+id/Subject"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Subject"
+        android:background="#63ffd2"
+        android:spinnerMode="dialog"
+        android:contentDescription="Subjects"
+        android:layout_below="@+id/ETBOOKNAME"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

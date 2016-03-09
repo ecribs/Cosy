@@ -90,8 +90,11 @@ public class ServerRequests
                 Log.v(jObject.toString(), "2");
                 if (jObject.length() != 0) {
                     Log.v("happened", "2");
+                    String ClassID = jObject.getString("ClassID");
+                    String Role = jObject.getString("Role");
 
-                    returnedUser = new User(user.username, user.password);
+
+                    returnedUser = new User(user.username, user.password, ClassID, Role);
                 }
 
             } catch (Exception e) {
