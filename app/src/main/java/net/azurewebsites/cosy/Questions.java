@@ -83,6 +83,8 @@ public class Questions extends ActionBarActivity {
 
 
 
+
+
         if(num>1)
         {
             Previous.setVisibility(View.VISIBLE);
@@ -123,6 +125,7 @@ public class Questions extends ActionBarActivity {
                     {
                         Next.setVisibility(View.INVISIBLE);
                         SUBMIT.setVisibility(View.VISIBLE);
+                        TVQuestion.setText("COMPLETE");
                     }
 
                     TVQuestion.setText("Question: "+num);
@@ -134,25 +137,22 @@ public class Questions extends ActionBarActivity {
 
             });
 
-/*
+
 
 
             SUBMIT.setOnClickListener(new View.OnClickListener()
             {
                 public void onClick(View v)
                 {
+                    Intent i = new Intent(getApplicationContext(), Worksheet.class);
+                    i.putExtra("TopicID", TopicID);
+                    startActivity(i);
 
-                        int index;
-                        for(index=1; index<=amount; index++)
-                        {
-
-
-                        }
 
                 }
 
             });
-*/
+
 
 
 

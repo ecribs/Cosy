@@ -19,4 +19,6 @@
     </string-array>
     <string name="title_activity_questions">Questions</string>
     <string name="title_activity_add_book">AddBook</string>
+    <string name="title_activity_classroom">Classroom</string>
+    <string name="title_activity_student_worksheet">StudentWorksheet</string>
 </resources>

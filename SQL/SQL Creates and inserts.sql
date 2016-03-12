@@ -1,10 +1,24 @@
 
+Create Table Classes 
+(
+	ClassID VARCHAR(10) Primary Key NOT NULL,
+	Num_Students INT NOT NULL
+);
 
 Create TABLE Subjects (
     SubjectID INT PRIMARY KEY NOT NULL IDENTITY(1, 1),
     SubjectName VARCHAR(20) NOT NULL,
     ClassID VARCHAR(10) NOT NULL
         FOREIGN KEY REFERENCES Classes(ClassID) ON DELETE CASCADE
+);
+
+Create Table Users 
+(
+	UserID INT PRIMARY KEY NOT NULL IDENTITY(1,1),
+	Username VARCHAR(20),
+	Password VARCHAR(10) ,
+	ClassID VARCHAR(10) FOREIGN KEY REFERENCES Classes(ClassID) ,
+	Role VARCHAR(10) NOT NULL
 );
 
 Create TABLE Books
@@ -43,6 +57,18 @@ Create TABLE Worksheet_Questions
 	Answer VARCHAR(200),
 	PRIMARY KEY (WorksheetID, Question_Num)
 );
+
+Create TABLE Student_Answer
+(
+	WorksheetID INT Not NULL,
+	Question_Num INT NOT NULL,
+	UserID INT NOT NULL Foreign KEY References Users(UserID) ON DELETE CASCADE ,
+	Answer VARCHAR(200),
+	FOREIGN KEY  (WorksheetID, Question_Num) REFERENCES Worksheet_Questions (WorksheetID, Question_Num),
+	PRIMARY KEY (WorksheetID, UserID,Question_Num)
+);
+
+
 
 
 insert into Classes values('1a', 20);

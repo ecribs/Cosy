@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEXT"
+        android:id="@+id/QNEXT"
+        android:background="#5199ff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="77dp"
+        android:minHeight="100dp"
+        android:maxWidth="100dp"
+        android:layout_toEndOf="@+id/TVQuestion" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Question: "
+        android:id="@+id/TVQuestion"
+        android:textColor="#ffffff"
+        android:textSize="45dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ETAnswer"
+        android:background="#ffff33"
+        android:paddingBottom="50dp"
+        android:textSize="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Answer"
+        android:id="@+id/textView4"
+        android:textColor="#ffffff"
+        android:layout_above="@+id/ETAnswer"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:id="@+id/QSUBMIT"
+        android:background="#5199ff"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/textView4"
+        android:maxWidth="100dp"
+        android:minHeight="100dp"
+        android:layout_alignTop="@+id/QNEXT" />
+
+
+</RelativeLayout>

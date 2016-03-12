@@ -305,6 +305,9 @@ public class worksheet_Subjects extends ActionBarActivity
                 {
 
                     jsonObject = new deletesubject().execute(listitem).get();
+
+
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e)

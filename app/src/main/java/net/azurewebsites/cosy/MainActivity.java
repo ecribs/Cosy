@@ -14,7 +14,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     UserLocalStore userLocalStore;
 
-
+    String Role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +31,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         books.setOnClickListener(this);
         worksheet.setOnClickListener(this);
+        Class.setOnClickListener(this);
+        admin.setOnClickListener(this);
 
 
 
@@ -45,7 +47,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onStart();
         if (authenticate() == true)
         {
+            User user =  userLocalStore.getLoggedInUser();
+            Role=user.Role;
+            Log.v("the person logged as",user.Role+Role);
+            if(Role.equals("Student"))
+            {
+                Log.v( "it works","we detect you are a student");
+                Intent ClassIntent = new Intent(this, ClassroomSubject.class);
+                startActivity(ClassIntent);
 
+            }
             Log.v( "","hello");
         }
     }
@@ -71,20 +82,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         switch(v.getId())
         {
             case R.id.bbooks:
-                Intent BooksIntent = new Intent(this, Books.class);
-                startActivity(BooksIntent);
+                Log.v("button pressed:","books.");
+
+               Intent BooksIntent = new Intent(this, Books.class);
+               startActivity(BooksIntent);
                 break;
 
             case R.id.bWorksheet:
-                Intent WorksheetIntent = new Intent(this, worksheet_Subjects.class);
+                Log.v("button pressed:","worksheet.");
+
+               Intent WorksheetIntent = new Intent(this, worksheet_Subjects.class);
                 startActivity(WorksheetIntent);
                 break;
 
             case R.id.btimetable:
+                Log.v("button pressed:","classroom.");
+
+                Intent ClassIntent = new Intent(this, ClassroomSubject.class);
+                startActivity(ClassIntent);
 
                 break;
 
             case R.id.badmin:
+                Log.v("button pressed:","admin");
+
 
                 break;
 

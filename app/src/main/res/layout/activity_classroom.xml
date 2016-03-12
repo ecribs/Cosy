@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+
+
+    <!-- Row 1 with single column -->
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+
+        <TextView
+            android:id="@+id/TextView055544"
+            android:text="Books"
+            android:layout_weight="1"
+            android:background= "#b0b0b0"
+            android:textColor="#000000"
+            android:padding="18dip" android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/TextView0454"
+            android:text="Work"
+            android:layout_weight="1" android:background="#a09f9f"
+            android:textColor="#000000"
+            android:padding="18dip" android:gravity="center"/>
+
+
+    </TableRow>
+
+    <!-- Row 2 with 3 columns -->
+
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <ListView
+            android:id="@+id/Lbooks"
+            android:text="Row 2 column 1"
+            android:layout_weight="1" android:background="#d8dc61"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"
+            android:stackFromBottom="false" />
+
+
+
+        <ListView
+            android:id="@+id/LWork"
+            android:text="Row 2 column 3"
+            android:layout_weight="1" android:background="#80ca77"
+            android:textColor="#000000"
+            android:padding="20dip" android:gravity="center"/>
+
+    </TableRow>
+
+    <!-- Row 3 with 2 columns -->
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+
+
+
+    </TableRow>
+
+
+
+
+</TableLayout>

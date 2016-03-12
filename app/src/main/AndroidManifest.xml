@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -51,7 +50,6 @@
             android:name=".AddWorksheet"
             android:label="Add Worksheet" >
         </activity>
-
         <activity
             android:name=".Questions"
             android:label="Add Questions" >
@@ -60,10 +58,21 @@
             android:name=".AddBook"
             android:label="Add Book" >
         </activity>
-
         <activity
             android:name=".EditSubject"
             android:label="Edit Subject" >
+        </activity>
+        <activity
+            android:name=".ClassroomSubject"
+            android:label="Subjects" >
+        </activity>
+        <activity
+            android:name=".Classroom"
+            android:label="Classroom" >
+        </activity>
+        <activity
+            android:name=".StudentWorksheet"
+            android:label="@string/title_activity_student_worksheet" >
         </activity>
     </application>
 

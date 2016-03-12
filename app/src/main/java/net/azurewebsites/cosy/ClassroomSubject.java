@@ -1,22 +1,18 @@
 package net.azurewebsites.cosy;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,34 +23,23 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class Books extends Activity
+public class ClassroomSubject extends ActionBarActivity
 {
 
-    String[] BookName= {};
-    String[] BookSubject= {};
     UserLocalStore userLocalStore;
-
-    //public String[] BookName;
-   // public String[] BookSubject;
-
-
-
+    String[] SubjectName= {};
+    int[] SubjectID={};
+    JSONObject jsonObject = null;
 
 
 
@@ -62,14 +47,19 @@ public class Books extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
         userLocalStore = new UserLocalStore(this);
-        JSONObject jsonObject = null;
+        JSONArray jsonArray = null;
+        String nothing = "Nothing to display";
 
 
-        try
-        {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_worksheet__subjects);
 
-             jsonObject = new getBooks().execute().get();
+
+        try {
+
+            jsonObject = new getSubjects().execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -77,85 +67,113 @@ public class Books extends Activity
         }
 
 
-        Log.v("converting:", "getting books");
-        JSONArray jsonArray = null;
-        try {
-            jsonArray = jsonObject.getJSONArray("Bookname");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        BookName = new String[jsonArray.length()];
-        for (int i = 0; i < jsonArray.length(); i++)
-        {
-            try {
-                BookName[i] = jsonArray.getString(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
 
-        Log.v("here is our book name:", BookName[2]);
-
-        // for getting subjectnames
         Log.v("we're getting a subject", "we're getting a subject");
-
+    try {
         try {
+            assert jsonObject != null;
             jsonArray = jsonObject.getJSONArray("SubjectName");
         } catch (JSONException e) {
             e.printStackTrace();
+            SubjectName[0] = nothing;
         }
-        BookSubject = new String[jsonArray.length()];
-        for (int i = 0; i < jsonArray.length(); i++)
-        {
+        assert jsonArray != null;
+        SubjectName = new String[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                BookSubject[i] = jsonArray.getString(i);
+                SubjectName[i] = jsonArray.getString(i);
             } catch (JSONException e) {
                 e.printStackTrace();
+                SubjectName[0] = nothing;
+
             }
         }
 
-        Log.v("here is the subject:", BookSubject[1]);
+        Log.v("getting a subjectID", "SubjectID TIME");
+        try {
+
+            try {
+                jsonArray = jsonObject.getJSONArray("SubjectID");
+                Log.v("Worked", "SubjectID is in ");
+
+            } catch (JSONException e) {
+                Log.v("failed", "No SubjectID");
+                e.printStackTrace();
+                SubjectName[0] = nothing;
+
+            }
+            SubjectID = new int[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Log.v("failed", "cant do loop");
+
+                try {
+                    SubjectID[i] = jsonArray.getInt(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.v("failed", "cant do loop 2");
+                    SubjectName[0] = nothing;
 
 
+                }
+            }
+        } catch (Exception e) {
+            SubjectName[0] = nothing;
 
-        setContentView(R.layout.activity_books);
+        }
+    }catch (Exception e)
+    {
+        SubjectName[0] = nothing;
 
-        super.onCreate(savedInstanceState);
-       // User user = userLocalStore.getLoggedInUser();
-
-
-       // String[] BookName = {"hello"};
-       // String[] BookSubject= {"from the other side"};
-
-
-
-        ListAdapter BookAdapter = new BookAdapter(this,BookName, BookSubject);
-        ListView BookList = (ListView) findViewById(R.id.booklist);
-        BookList.setAdapter(BookAdapter);
-
-        BookList.setOnItemClickListener
-                (
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String url = "http://cosy.azurewebsites.net/Books/" + BookName[position]+ ".pdf";
-                                Intent i = new Intent(Intent.ACTION_VIEW);
-                                i.setData(Uri.parse(url));
-                                startActivity(i);
-                                //String books = String.valueOf(parent.getItemAtPosition(position));
-                                // Toast.makeText(Books.this, books, Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                );
     }
 
 
 
+        Log.v("here is the subject:", SubjectName[1]);
+        Log.v("here is the subjectID:", ""+SubjectID[1]);
+
+        ListAdapter Subjectadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, SubjectName);
+        ListView SubjectList = (ListView) findViewById(R.id.SubjectList);
+        SubjectList.setAdapter(Subjectadapter);
+
+
+        SubjectList.setOnItemClickListener
+                (
+                        new AdapterView.OnItemClickListener()
+                        {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String subject = String.valueOf(parent.getItemAtPosition(position));
+                                Intent i = new Intent(getApplicationContext(), Classroom.class);
+                                i.putExtra("SubjectID", SubjectID[position]);
+                                startActivity(i);
+
+                                // Toast.makeText(Books.this, books, Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                );}
 
 
 
-    private class getBooks extends AsyncTask<Void, Void, JSONObject>
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_worksheet__subjects, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        Intent AddSubjectIntent = new Intent(this, AddSubject.class);
+        startActivity(AddSubjectIntent);
+
+        return true;
+
+    }
+
+
+    private class getSubjects extends AsyncTask<Void, Void, JSONObject>
     {
         //ResultSet Book;
 
@@ -164,10 +182,10 @@ public class Books extends Activity
         @Override
         protected void onPreExecute()
         {
-            Log.d("","we are executing");
-            pdialog = new ProgressDialog(Books.this);
+            Log.d("", "we are executing");
+            pdialog = new ProgressDialog(ClassroomSubject.this);
             pdialog.setCancelable(false);
-            pdialog.setMessage("Getting Books...");
+            pdialog.setMessage("Getting Subjects...");
             showdialog();
 
 
@@ -185,7 +203,7 @@ public class Books extends Activity
             try
             {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/bookrequest.php");
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/getsubjects.php");
 
                 User user = userLocalStore.getLoggedInUser();
 
@@ -205,7 +223,6 @@ public class Books extends Activity
                 result = EntityUtils.toString(entity);
                 Log.v("",result);
                 jsonObject = new JSONObject(result);
-               // JSONObject jsonObject = obj.getJSONObject(0);
 
 
 
@@ -257,24 +274,13 @@ public class Books extends Activity
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_books, menu);
-        return true;
-    }
 
 
 
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int TopicID = 5;
-        Intent i = new Intent(getApplicationContext(), AddBook.class);
-        startActivity(i);
-
-        return true;
 
 
-    }
+
+
+
 
 }

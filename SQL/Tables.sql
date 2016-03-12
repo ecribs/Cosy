@@ -7,7 +7,8 @@ Create Table Classes
 
 Create Table Users 
 (
-	Username VARCHAR(20) Primary key,
+	UserID INT PRIMARY KEY NOT NULL IDENTITY(1,1),
+	Username VARCHAR(20),
 	Password VARCHAR(10) ,
 	ClassID VARCHAR(10) FOREIGN KEY REFERENCES Classes(ClassID) ,
 	Role VARCHAR(10) NOT NULL
@@ -48,11 +49,21 @@ W_Date Date
 
 Create TABLE Worksheet_Questions
 (
-	WorksheetID INT  NOT NULL Foreign KEY References Worksheet(WorksheetID),
+	WorksheetID INT  NOT NULL Foreign KEY References Worksheet(WorksheetID) ON DELETE CASCADE,
 	Question_Num INT NOT NULL,
 	Question VARCHAR(200) NOT NULL,
 	Answer VARCHAR(200),
 	PRIMARY KEY (WorksheetID, Question_Num)
+);
+
+Create TABLE Student_Answer
+(
+	WorksheetID INT Not NULL,
+	Question_Num INT NOT NULL,
+	UserID INT NOT NULL Foreign KEY References Users(UserID) ON DELETE CASCADE ,
+	Answer VARCHAR(200),
+	FOREIGN KEY  (WorksheetID, Question_Num) REFERENCES Worksheet_Questions (WorksheetID, Question_Num),
+	PRIMARY KEY (WorksheetID, UserID,Question_Num)
 );
 
 
