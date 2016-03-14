@@ -74,6 +74,18 @@
             android:name=".StudentWorksheet"
             android:label="@string/title_activity_student_worksheet" >
         </activity>
+        <activity
+            android:name=".StudentWorksheetsResponse"
+            android:label="@string/title_activity_student_worksheets_response" >
+        </activity>
+        <activity
+            android:name=".UserTest"
+            android:label="@string/title_activity_user_test" >
+        </activity>
+        <activity
+            android:name=".TakeAttendence"
+            android:label="@string/title_activity_take_attendence" >
+        </activity>
     </application>
 
 </manifest>

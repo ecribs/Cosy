@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import javax.security.auth.Subject;
-
 public class StudentWorksheet extends ActionBarActivity {
     TextView TVquestion;
     EditText ETAnswer;
@@ -45,6 +41,8 @@ public class StudentWorksheet extends ActionBarActivity {
     String[] Question;
     JSONArray jsonArray;
     int amount;
+    String Answer;
+    int SubjectID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +54,61 @@ public class StudentWorksheet extends ActionBarActivity {
         TVquestion = (TextView) findViewById(R.id.TVQuestion);
         ETAnswer = (EditText) findViewById(R.id.ETAnswer);
         Submit = (Button) findViewById(R.id.QSUBMIT);
-        Next = (Button) findViewById(R.id.QNEXT);
+        Next = (Button) findViewById(R.id.NEXT);
         Bundle subjectdata = getIntent().getExtras();
         WorksheetID = subjectdata.getInt("WorksheetID");
         amount = subjectdata.getInt("Num_Q");
+        SubjectID = subjectdata.getInt("SubjectID");
 
+
+        updatedisplay();
+
+
+        Next.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Answer = ETAnswer.getText().toString();
+                InsertAnswer InsertAnswer = new InsertAnswer();
+                InsertAnswer.execute();
+
+                ETAnswer.setText(" ");
+
+                QuestionNum++;
+
+                updatedisplay();
+                if (QuestionNum > amount) {
+                    Next.setVisibility(View.INVISIBLE);
+                    Submit.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+
+
+        });
+
+        Submit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+
+                Intent i = new Intent(getApplicationContext(), Classroom.class);
+                i.putExtra("SubjectID", SubjectID);
+                startActivity(i);
+
+
+            }
+
+
+        });
+
+
+
+
+    }
+
+
+    private void updatedisplay()
+    {
 
         try {
 
@@ -71,21 +119,7 @@ public class StudentWorksheet extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        updatedisplay();
 
-        if (QuestionNum>amount)
-        {
-            Next.setVisibility(View.INVISIBLE);
-            Submit.setVisibility(View.VISIBLE);
-            TVquestion.setText("COMPLETE");
-        }
-
-    }
-
-
-
-    private void updatedisplay()
-    {
         try {
             try {
                 assert jsonObject != null;
@@ -108,12 +142,21 @@ public class StudentWorksheet extends ActionBarActivity {
         }catch (Exception e)
         {
             Question[0] = "Error Question not loading";
+            if (QuestionNum>amount)
+            {
+                Question[0] = "Complete";
+
+            }
 
         }
 
-        TVquestion.setText(Question[0]);
+        TVquestion.setText(QuestionNum + "."+  Question[0]);
+
+
 
     }
+
+
 
 
 
@@ -162,7 +205,6 @@ public class StudentWorksheet extends ActionBarActivity {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
                 nameValuePairs.add(new BasicNameValuePair("WorksheetID", WorksheetID+""));
                 nameValuePairs.add(new BasicNameValuePair("QuestionNum", QuestionNum+""));
-               // nameValuePairs.add(new BasicNameValuePair("username", username));
 
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -199,6 +241,118 @@ public class StudentWorksheet extends ActionBarActivity {
         {
 
             hidedialog();
+        }
+
+
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.show();
+
+            }
+
+        }
+
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.dismiss();
+
+            }
+
+        }
+
+    }
+
+
+
+
+
+    private class InsertAnswer extends AsyncTask<Void, Void, Void>
+    {
+        //ResultSet Book;
+
+        private ProgressDialog pdialog;
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.d("", "we are executing");
+            pdialog = new ProgressDialog(StudentWorksheet.this);
+            pdialog.setCancelable(false);
+            pdialog.setMessage("Inserting Subject...");
+            showdialog();
+
+
+
+
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params)
+
+        {
+            String result;
+            JSONObject jsonObject;
+
+            User user = userLocalStore.getLoggedInUser();
+
+            try
+            {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/insertanswer.php");
+
+
+
+                Log.v("values being posted:", WorksheetID + " " + QuestionNum + " "+  user.username + " " + Answer);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+                nameValuePairs.add(new BasicNameValuePair( "WorksheetID", WorksheetID+""));
+                nameValuePairs.add(new BasicNameValuePair("Question_Num", QuestionNum+""));
+                nameValuePairs.add(new BasicNameValuePair("Username", user.username));
+                nameValuePairs.add(new BasicNameValuePair("Answer", Answer));
+
+
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                Log.v("Posting", "here we go");
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+
+                Log.d("","got a response");
+
+                result = EntityUtils.toString(entity);
+                Log.v("",result);
+                jsonObject = new JSONObject(result);
+
+
+
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void blah)
+        {
+            hidedialog();
+
         }
 
 

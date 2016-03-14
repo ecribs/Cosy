@@ -11,32 +11,41 @@
     <TextView
         android:text="Username"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:textSize="60dp" />
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#ffff33" />
 
     <TextView
         android:text="Password"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="60dp"
+        android:textColor="#ffffff" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:inputType="textPassword"
         android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#ffff33" />
 
     <Button
         android:id="@+id/bLogin"
         android:layout_width="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="Login"
+        android:background="#5199ff" />
 
 
 

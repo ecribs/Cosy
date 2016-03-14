@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +27,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class Questions extends ActionBarActivity {
     TextView TVQuestion;
@@ -67,7 +64,7 @@ public class Questions extends ActionBarActivity {
         TVQuestion = (TextView) findViewById(R.id.TVQuestion);
         ETQuestion = (EditText) findViewById(R.id.ETQuestion);
         ETAnswer = (EditText) findViewById(R.id.ETAnswer);
-        Next = (Button) findViewById(R.id.QNEXT);
+        Next = (Button) findViewById(R.id.NEXT);
         SUBMIT = (Button) findViewById(R.id.QSUBMIT);
 
         final Bundle extras = getIntent().getExtras();
@@ -77,7 +74,11 @@ public class Questions extends ActionBarActivity {
         answerarray = extras.getStringArray("arrayanswer");
         questionarray = extras.getStringArray("questionarray");
         num = 1;
-        TVQuestion.setText("Question: "+ num);
+
+        if(num<amount)
+        {
+            TVQuestion.setText("Question: " + num);
+        }
 
 
 
@@ -127,7 +128,7 @@ public class Questions extends ActionBarActivity {
                         SUBMIT.setVisibility(View.VISIBLE);
                         TVQuestion.setText("COMPLETE");
                     }
-
+                    if(num<amount)
                     TVQuestion.setText("Question: "+num);
 
 

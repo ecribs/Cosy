@@ -1,18 +1,18 @@
 package net.azurewebsites.cosy;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,130 +33,100 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class ClassroomSubject extends ActionBarActivity
-{
 
+public class TakeAttendence extends ActionBarActivity {
+    ListView lv;
+    String List[] ={"Android","Windows","IOS"};
+    Button btn;
     UserLocalStore userLocalStore;
-    String[] SubjectName= {};
-    int[] SubjectID={};
-    JSONObject jsonObject = null;
-
-
-
+    String[] Users;
+    JSONObject jsonObject;
+    JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
-        userLocalStore = new UserLocalStore(this);
-        JSONArray jsonArray = null;
-        String nothing = "Nothing to display";
-
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_worksheet__subjects);
-
+        setContentView(R.layout.activity_take_attendence);
+        lv= (ListView) findViewById(R.id.LVCLASS);
+        btn = (Button) findViewById(R.id.button);
+        userLocalStore = new UserLocalStore(this);
 
         try {
 
-            jsonObject = new getSubjects().execute().get();
-        } catch (InterruptedException e) {
+            jsonObject = new getclass().execute().get();
+        }
+        catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (ExecutionException e) {
+        }
+        catch (ExecutionException e) {
             e.printStackTrace();
         }
 
 
-
-        Log.v("we're getting a subject", "we're getting a subject");
-    try {
+        Log.v("we're getting a User", "we're getting a User");
         try {
-            assert jsonObject != null;
-            jsonArray = jsonObject.getJSONArray("SubjectName");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            SubjectName[0] = nothing;
-        }
-        assert jsonArray != null;
-        SubjectName = new String[jsonArray.length()];
-        for (int i = 0; i < jsonArray.length(); i++) {
             try {
-                SubjectName[i] = jsonArray.getString(i);
+                assert jsonObject != null;
+                jsonArray = jsonObject.getJSONArray("Username");
             } catch (JSONException e) {
                 e.printStackTrace();
-                SubjectName[0] = nothing;
-
+                Users[0] = "nothing";
             }
-        }
-
-        Log.v("getting a subjectID", "SubjectID TIME");
-        try {
-
-            try {
-                jsonArray = jsonObject.getJSONArray("SubjectID");
-                Log.v("Worked", "SubjectID is in ");
-
-            } catch (JSONException e) {
-                Log.v("failed", "No SubjectID");
-                e.printStackTrace();
-                SubjectName[0] = nothing;
-
-            }
-            SubjectID = new int[jsonArray.length()];
+            assert jsonArray != null;
+            Users = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
-                Log.v("failed", "cant do loop");
-
                 try {
-                    SubjectID[i] = jsonArray.getInt(i);
+                    Users[i] = jsonArray.getString(i);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.v("failed", "cant do loop 2");
-                    SubjectName[0] = nothing;
-
+                    Users[0] = "nothing";
 
                 }
             }
-        } catch (Exception e) {
-            SubjectName[0] = nothing;
+        }catch (Exception e)
+        {
+            Log.v("nothing works","nothing works");
 
         }
-    }catch (Exception e)
-    {
-        SubjectName[0] = nothing;
+
+
+        ArrayAdapter<String> ard = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,Users);
+        lv.setAdapter(ard);
+
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                SparseBooleanArray sba= lv.getCheckedItemPositions();
+
+                for(int i=0; i<sba.size(); i++)
+                {
+                    if(sba.valueAt(i))
+                    {
+                        Toast.makeText(getApplicationContext(),Users[sba.keyAt(i)], Toast.LENGTH_LONG).show();
+
+                    }
+
+
+                }
+
+
+            }
+        });
+
+
+
+
 
     }
 
 
-
-        Log.v("here is the subject:", SubjectName[1]);
-        Log.v("here is the subjectID:", ""+SubjectID[1]);
-
-        ListAdapter Subjectadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, SubjectName);
-        ListView SubjectList = (ListView) findViewById(R.id.SubjectList);
-        SubjectList.setAdapter(Subjectadapter);
-
-
-        SubjectList.setOnItemClickListener
-                (
-                        new AdapterView.OnItemClickListener()
-                        {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String subject = String.valueOf(parent.getItemAtPosition(position));
-                                Intent i = new Intent(getApplicationContext(), Classroom.class);
-                                i.putExtra("SubjectID", SubjectID[position]);
-                                startActivity(i);
-
-                                // Toast.makeText(Books.this, books, Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                );}
-
-
-
-
-    private class getSubjects extends AsyncTask<Void, Void, JSONObject>
+    private class getclass extends AsyncTask<Void, Void, JSONObject>
     {
         //ResultSet Book;
 
@@ -166,7 +136,7 @@ public class ClassroomSubject extends ActionBarActivity
         protected void onPreExecute()
         {
             Log.d("", "we are executing");
-            pdialog = new ProgressDialog(ClassroomSubject.this);
+            pdialog = new ProgressDialog(TakeAttendence.this);
             pdialog.setCancelable(false);
             pdialog.setMessage("Getting Subjects...");
             showdialog();
@@ -186,16 +156,16 @@ public class ClassroomSubject extends ActionBarActivity
             try
             {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/getsubjects.php");
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/attendencelist.php");
 
                 User user = userLocalStore.getLoggedInUser();
 
 
                 String username = user.username;
-                Log.v("user logged in is:",username);
+                Log.v("user logged in is:",user.ClassID);
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair( "username", username ));
+                nameValuePairs.add(new BasicNameValuePair( "ClassID", user.ClassID ));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 HttpResponse response = httpclient.execute(httppost);
@@ -255,15 +225,4 @@ public class ClassroomSubject extends ActionBarActivity
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
 }

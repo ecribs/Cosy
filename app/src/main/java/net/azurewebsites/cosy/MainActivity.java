@@ -102,10 +102,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(ClassIntent);
 
                 break;
-
             case R.id.badmin:
                 Log.v("button pressed:","admin");
-
+                Intent AdminIntent = new Intent(this, TakeAttendence.class);
+                startActivity(AdminIntent);
 
                 break;
 

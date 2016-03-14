@@ -41,20 +41,20 @@
 
         <ListView
             android:id="@+id/Lbooks"
-            android:text="Row 2 column 1"
-            android:layout_weight="1" android:background="#d8dc61"
+            android:layout_weight="1"
+            android:background="#d8dc61"
             android:textColor="#000000"
-            android:padding="20dip" android:gravity="center"
-            android:stackFromBottom="false" />
+            android:padding="20dip" android:gravity="center" />
 
 
 
         <ListView
             android:id="@+id/LWork"
-            android:text="Row 2 column 3"
-            android:layout_weight="1" android:background="#80ca77"
+            android:layout_weight="1"
+            android:background="#80ca77"
             android:textColor="#000000"
-            android:padding="20dip" android:gravity="center"/>
+            android:padding="20dip"
+/>
 
     </TableRow>
 

@@ -62,7 +62,7 @@ Create TABLE Student_Answer
 (
 	WorksheetID INT Not NULL,
 	Question_Num INT NOT NULL,
-	UserID INT NOT NULL Foreign KEY References Users(UserID) ON DELETE CASCADE ,
+	UserID INT NOT NULL Foreign KEY References Users(UserID),
 	Answer VARCHAR(200),
 	FOREIGN KEY  (WorksheetID, Question_Num) REFERENCES Worksheet_Questions (WorksheetID, Question_Num),
 	PRIMARY KEY (WorksheetID, UserID,Question_Num)

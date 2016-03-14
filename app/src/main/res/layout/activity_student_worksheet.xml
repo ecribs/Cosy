@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NEXT"
-        android:id="@+id/QNEXT"
+        android:id="@+id/NEXT"
         android:background="#5199ff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -63,7 +63,7 @@
         android:layout_alignStart="@+id/textView4"
         android:maxWidth="100dp"
         android:minHeight="100dp"
-        android:layout_alignTop="@+id/QNEXT" />
+        android:layout_alignTop="@+id/NEXT" />
 
 
 </RelativeLayout>

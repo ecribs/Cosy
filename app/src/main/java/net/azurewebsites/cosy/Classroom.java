@@ -237,6 +237,7 @@ try {
                                 Intent i = new Intent(getApplicationContext(), StudentWorksheet.class);
                                 i.putExtra("WorksheetID", WorksheetID[position]);
                                 i.putExtra("Num_Q", Num_Q[position]);
+                                i.putExtra("SubjectID",SubjectID);
                                 startActivity(i);
                                 //String books = String.valueOf(parent.getItemAtPosition(position));
                                 // Toast.makeText(Books.this, books, Toast.LENGTH_LONG).show();

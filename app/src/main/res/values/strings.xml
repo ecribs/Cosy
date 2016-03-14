@@ -21,4 +21,7 @@
     <string name="title_activity_add_book">AddBook</string>
     <string name="title_activity_classroom">Classroom</string>
     <string name="title_activity_student_worksheet">StudentWorksheet</string>
+    <string name="title_activity_student_worksheets_response">StudentWorksheetsResponse</string>
+    <string name="title_activity_user_test">UserTest</string>
+    <string name="title_activity_take_attendence">TakeAttendence</string>
 </resources>

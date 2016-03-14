@@ -10,6 +10,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -136,6 +137,22 @@ public class Worksheet extends ActionBarActivity
         WorksheetList.setAdapter(WorksheetAdapter);
 
         registerForContextMenu(WorksheetList);
+
+        WorksheetList.setOnItemClickListener
+                (
+                        new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                Intent i = new Intent(getApplicationContext(), StudentWorksheetsResponse.class);
+                                Log.v("sending:", WorksheetID[position]+"");
+                                i.putExtra("WorksheetID", WorksheetID[position]);
+                                startActivity(i);
+
+                            }
+                        }
+
+                );
 
 
     }
