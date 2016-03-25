@@ -50,7 +50,6 @@ if( $conn )
 			
 	if ($stmt === false) 
 	{
-		//echo "statement fucked";
         die(print_r(sqlsrv_errors(), true));
     }
 

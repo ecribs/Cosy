@@ -63,6 +63,12 @@ public class StudentWorksheet extends ActionBarActivity {
 
         updatedisplay();
 
+        if (QuestionNum >= amount)
+        {
+            Next.setVisibility(View.INVISIBLE);
+            Submit.setVisibility(View.VISIBLE);
+        }
+
 
         Next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,9 +82,11 @@ public class StudentWorksheet extends ActionBarActivity {
                 QuestionNum++;
 
                 updatedisplay();
-                if (QuestionNum > amount) {
+                if (QuestionNum >= amount)
+                {
                     Next.setVisibility(View.INVISIBLE);
                     Submit.setVisibility(View.VISIBLE);
+
                 }
 
 
@@ -90,6 +98,9 @@ public class StudentWorksheet extends ActionBarActivity {
         Submit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
+                Answer = ETAnswer.getText().toString();
+                InsertAnswer InsertAnswer = new InsertAnswer();
+                InsertAnswer.execute();
 
                 Intent i = new Intent(getApplicationContext(), Classroom.class);
                 i.putExtra("SubjectID", SubjectID);

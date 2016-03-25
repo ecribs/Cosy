@@ -2,6 +2,8 @@ package net.azurewebsites.cosy;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static net.azurewebsites.cosy.R.*;
+
 public class ClassroomSubject extends ActionBarActivity
 {
 
@@ -40,6 +46,7 @@ public class ClassroomSubject extends ActionBarActivity
     String[] SubjectName= {};
     int[] SubjectID={};
     JSONObject jsonObject = null;
+    RelativeLayout test;
 
 
 
@@ -54,7 +61,11 @@ public class ClassroomSubject extends ActionBarActivity
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_worksheet__subjects);
+        setContentView(layout.activity_worksheet__subjects);
+
+         test = (RelativeLayout) findViewById(id.main_view);
+
+        test.setBackgroundColor(Color.parseColor("#8bcbc8"));
 
 
         try {
@@ -104,7 +115,6 @@ public class ClassroomSubject extends ActionBarActivity
             }
             SubjectID = new int[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
-                Log.v("failed", "cant do loop");
 
                 try {
                     SubjectID[i] = jsonArray.getInt(i);
@@ -132,7 +142,7 @@ public class ClassroomSubject extends ActionBarActivity
         Log.v("here is the subjectID:", ""+SubjectID[1]);
 
         ListAdapter Subjectadapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, SubjectName);
-        ListView SubjectList = (ListView) findViewById(R.id.SubjectList);
+        ListView SubjectList = (ListView) findViewById(id.SubjectList);
         SubjectList.setAdapter(Subjectadapter);
 
 

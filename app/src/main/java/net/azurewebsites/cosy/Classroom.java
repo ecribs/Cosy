@@ -42,7 +42,8 @@ public class Classroom extends ActionBarActivity {
     UserLocalStore userLocalStore;
     int SubjectID;
     String[] WorksheetName;
-    int[] Num_Q;
+    int[] Num_Q={};
+    String nothing =  "nothing to display";
 
 
 
@@ -121,34 +122,38 @@ public class Classroom extends ActionBarActivity {
         Log.v("getting WorksheetID", "we're getting a WorksheetID");
 
     try {
-        jsonArray = jsonObject.getJSONArray("WorksheetID");
-        Log.v("Worked", "WorksheetID is in ");
+        try {
+            jsonArray = jsonObject.getJSONArray("WorksheetID");
+            Log.v("Worked", "WorksheetID is in ");
 
-    } catch (JSONException e) {
-        Log.v("failed", "No WorksheetID");
-        e.printStackTrace();
-        WorksheetID[0]= 0;
+        } catch (JSONException e) {
+            Log.v("failed", "No WorksheetID");
+            e.printStackTrace();
 
-    }
-    WorksheetID = new int[jsonArray.length()];
-    for (int i = 0; i < jsonArray.length(); i++)
+
+        }
+        WorksheetID = new int[jsonArray.length()];
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            try {
+                WorksheetID[i] = jsonArray.getInt(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.v("failed", "cant do loop 2");
+            }
+        }
+    }catch (Exception e)
     {
 
-        try {
-            WorksheetID[i] = jsonArray.getInt(i);
-        } catch (JSONException e)
-        {
-            e.printStackTrace();
-            Log.v("failed", "cant do loop 2");
-        }
-}
+    }
 
         // for getting WorksheetName
         Log.v("we're getting Worksheet", "we're getting Worksheet");
 try {
     try {
         jsonArray = jsonObject.getJSONArray("WorksheetName");
-    } catch (JSONException e) {
+    } catch (JSONException e)
+    {
         e.printStackTrace();
 
     }
@@ -162,7 +167,7 @@ try {
     }
 }catch (Exception e)
 {
-    WorksheetName[0] = "nothing to display";
+    WorksheetName[0] = nothing;
 
 }
 
@@ -189,7 +194,6 @@ try {
     }
 }catch(Exception e)
 {
-    Num_Q[0]=0;
 
 }
 

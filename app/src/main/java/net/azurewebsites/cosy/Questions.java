@@ -77,7 +77,7 @@ public class Questions extends ActionBarActivity {
 
         if(num<amount)
         {
-            TVQuestion.setText("Question: " + num);
+            TVQuestion.setText("Question: " + num + " ");
         }
 
 
@@ -122,14 +122,16 @@ public class Questions extends ActionBarActivity {
                     ETQuestion.setText(" ");
                     ETAnswer.setText(" ");
 
-                    if (num>amount)
+                    if (num>=amount)
                     {
                         Next.setVisibility(View.INVISIBLE);
                         SUBMIT.setVisibility(View.VISIBLE);
                         TVQuestion.setText("COMPLETE");
+                        ETAnswer.setVisibility(View.INVISIBLE);
+                        ETQuestion.setVisibility(View.INVISIBLE);
                     }
                     if(num<amount)
-                    TVQuestion.setText("Question: "+num);
+                    TVQuestion.setText("Question: " +num + " ");
 
 
                 }

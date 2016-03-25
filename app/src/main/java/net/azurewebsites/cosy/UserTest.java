@@ -211,12 +211,12 @@ public class UserTest extends ActionBarActivity
         else
         {
             Log.v("in the else","setting variables");
-            TVVerdict.setText("Final Score = " + score + "/" + Amount);
-            TVQUESTION.setVisibility(View.INVISIBLE);
+            TVQUESTION.setText("Final Score = " + score + "/" + Amount);
             TVSTUDENTANSWER.setVisibility(View.INVISIBLE);
             TVANSWER.setVisibility(View.INVISIBLE);
-
+            NEXT.setVisibility(View.INVISIBLE);
             Submit.setVisibility(View.VISIBLE);
+            TVVerdict.setVisibility(View.INVISIBLE);
 
 
         }

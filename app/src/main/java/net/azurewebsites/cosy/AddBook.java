@@ -152,7 +152,6 @@ Button Browse, image, Upload;
             }
             SubjectID = new int[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
-                Log.v("failed", "cant do loop");
 
                 try {
                     SubjectID[i] = jsonArray.getInt(i);
@@ -244,7 +243,8 @@ Button Browse, image, Upload;
                 }
 
 
-
+                Intent i = new Intent(getApplicationContext(), Books.class);
+                startActivity(i);
 
 
             }

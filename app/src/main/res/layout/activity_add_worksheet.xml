@@ -30,9 +30,9 @@
         android:layout_below="@+id/textView3"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:background="#aaffc7"
+        android:background="#ffa183"
         android:padding="5dp"
-        android:text="TESTS" />
+        android:hint="Enter the Worksheet Name" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -43,9 +43,9 @@
         android:layout_below="@+id/WorksheetName"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/WorksheetName"
-        android:background="#4fff91"
+        android:background="#ffdafd"
         android:padding="5dp"
-        android:text="3" />
+        android:hint="Enter the Number of Questions" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -55,7 +55,8 @@
         android:layout_centerHorizontal="true"
         android:entries="@array/Q_type"
         android:background="#75e6ff"
-        android:spinnerMode="dialog" />
+        android:spinnerMode="dialog"
+        android:visibility="invisible" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -65,7 +66,7 @@
         android:id="@+id/W_Date"
         android:background="#6abeff"
         android:padding="5dp"
-        android:text="2016-03-01"
+        android:text="2016-03-23"
         android:layout_below="@+id/S_Ques"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/S_Ques" />

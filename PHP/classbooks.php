@@ -45,7 +45,7 @@ if( $conn )
 		
 		
 			
-			$query = sprintf("select WorksheetID, WorksheetName,Num_Q from Worksheet join Topic on Worksheet.TopicID = Topic.TopicID where SubjectID = 50 and W_Date = CONVERT(date, getdate())");
+			$query = sprintf("select WorksheetID, WorksheetName,Num_Q from Worksheet join Topic on Worksheet.TopicID = Topic.TopicID where SubjectID = ? and W_Date = CONVERT(date, getdate())");
 			$params1 = array($SubjectID);
 			$stmt = sqlsrv_query($conn, $query, $params1);
 			//print_r($row);
