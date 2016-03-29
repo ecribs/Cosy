@@ -41,7 +41,7 @@ public class Classroom extends ActionBarActivity {
     int[] WorksheetID = {};
     UserLocalStore userLocalStore;
     int SubjectID;
-    String[] WorksheetName;
+    String[] WorksheetName={};
     int[] Num_Q={};
     String nothing =  "nothing to display";
 
@@ -121,81 +121,81 @@ public class Classroom extends ActionBarActivity {
         // for getting Worksheet
         Log.v("getting WorksheetID", "we're getting a WorksheetID");
 
-    try {
         try {
-            jsonArray = jsonObject.getJSONArray("WorksheetID");
-            Log.v("Worked", "WorksheetID is in ");
-
-        } catch (JSONException e) {
-            Log.v("failed", "No WorksheetID");
-            e.printStackTrace();
-
-
-        }
-        WorksheetID = new int[jsonArray.length()];
-        for (int i = 0; i < jsonArray.length(); i++) {
-
             try {
-                WorksheetID[i] = jsonArray.getInt(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.v("failed", "cant do loop 2");
-            }
-        }
-    }catch (Exception e)
-    {
+                jsonArray = jsonObject.getJSONArray("WorksheetID");
+                Log.v("Worked", "WorksheetID is in ");
 
-    }
+            } catch (JSONException e) {
+                Log.v("failed", "No WorksheetID");
+                e.printStackTrace();
+
+
+            }
+            WorksheetID = new int[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                try {
+                    WorksheetID[i] = jsonArray.getInt(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.v("failed", "cant do loop 2");
+                }
+            }
+        }catch (Exception e)
+        {
+
+        }
 
         // for getting WorksheetName
         Log.v("we're getting Worksheet", "we're getting Worksheet");
-try {
-    try {
-        jsonArray = jsonObject.getJSONArray("WorksheetName");
-    } catch (JSONException e)
-    {
-        e.printStackTrace();
-
-    }
-    WorksheetName = new String[jsonArray.length()];
-    for (int i = 0; i < jsonArray.length(); i++) {
         try {
-            WorksheetName[i] = jsonArray.getString(i);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            try {
+                jsonArray = jsonObject.getJSONArray("WorksheetName");
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+
+            }
+            WorksheetName = new String[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    WorksheetName[i] = jsonArray.getString(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e)
+        {
+            WorksheetName[0] = nothing;
+
         }
-    }
-}catch (Exception e)
-{
-    WorksheetName[0] = nothing;
-
-}
-
-try {
-    try {
-        jsonArray = jsonObject.getJSONArray("Num_Q");
-        Log.v("Num_Q", "Num_Q is in ");
-
-    } catch (JSONException e) {
-        Log.v("failed", "No WorksheetID");
-        e.printStackTrace();
-        Num_Q[0] = 0;
-
-    }
-    Num_Q = new int[jsonArray.length()];
-    for (int i = 0; i < jsonArray.length(); i++) {
 
         try {
-            Num_Q[i] = jsonArray.getInt(i);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.v("failed", "cant do loop 2");
-        }
-    }
-}catch(Exception e)
-{
+            try {
+                jsonArray = jsonObject.getJSONArray("Num_Q");
+                Log.v("Num_Q", "Num_Q is in ");
 
-}
+            } catch (JSONException e) {
+                Log.v("failed", "No WorksheetID");
+                e.printStackTrace();
+                Num_Q[0] = 0;
+
+            }
+            Num_Q = new int[jsonArray.length()];
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                try {
+                    Num_Q[i] = jsonArray.getInt(i);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.v("failed", "cant do loop 2");
+                }
+            }
+        }catch(Exception e)
+        {
+
+        }
 
 
         Log.v("here is the stuff:", WorksheetID[0] + "" + WorksheetName[0]);
@@ -253,18 +253,21 @@ try {
     }
 
 
-    private class getBooks extends AsyncTask<Void, Void, JSONObject> {
+    private class getBooks extends AsyncTask<Void, Void, JSONObject>
+    {
         //ResultSet Book;
 
         private ProgressDialog pdialog;
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             Log.d("", "we are executing");
             pdialog = new ProgressDialog(Classroom.this);
             pdialog.setCancelable(false);
-            pdialog.setMessage("Getting Books...");
+            pdialog.setMessage("Getting Subjects...");
             showdialog();
+
 
 
         }
@@ -277,34 +280,42 @@ try {
             String result = null;
             JSONObject jsonObject = null;
 
-            try {
+            try
+            {
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/classbooks.php");
 
+                User user = userLocalStore.getLoggedInUser();
 
 
-
+                String username = user.username;
+                Log.v("user logged in is:",username);
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("SubjectID", SubjectID+""));
+                nameValuePairs.add(new BasicNameValuePair( "SubjectID", SubjectID+"" ));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
 
-                Log.d("", "got a response");
+                Log.d("","got a response");
 
                 result = EntityUtils.toString(entity);
-                Log.v("", result);
+                Log.v("",result);
                 jsonObject = new JSONObject(result);
-                // JSONObject jsonObject = obj.getJSONObject(0);
 
 
-            } catch (ClientProtocolException e) {
+
+            }
+            catch (ClientProtocolException e)
+            {
                 e.printStackTrace();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (JSONException e)
+            {
                 e.printStackTrace();
             }
 
@@ -312,22 +323,28 @@ try {
         }
 
         @Override
-        protected void onPostExecute(JSONObject jsonObject) {
+        protected void onPostExecute(JSONObject jsonObject)
+        {
 
             hidedialog();
         }
 
 
-        protected void showdialog() {
-            if (pdialog.isShowing()) {
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
                 pdialog.show();
 
             }
 
         }
 
-        private void hidedialog() {
-            if (pdialog.isShowing()) {
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
                 pdialog.dismiss();
 
             }

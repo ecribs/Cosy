@@ -37,14 +37,14 @@
         android:textColor="#ffffff"
         android:layout_marginTop="97dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView4" />
+        android:layout_alignStart="@+id/TVAnswer" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ETAnswer"
         android:background="#ffff33"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/TVAnswer"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:paddingBottom="50dp"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Answer"
-        android:id="@+id/textView4"
+        android:id="@+id/TVAnswer"
         android:textColor="#ffffff"
         android:layout_below="@+id/ETQuestion"
         android:layout_centerHorizontal="true" />
@@ -67,7 +67,7 @@
         android:id="@+id/QSUBMIT"
         android:background="#5199ff"
         android:visibility="invisible"
-        android:layout_alignStart="@+id/textView4"
+        android:layout_alignStart="@+id/TVAnswer"
         android:maxWidth="100dp"
         android:minHeight="100dp"
         android:layout_alignTop="@+id/NEXT" />

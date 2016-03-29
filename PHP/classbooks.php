@@ -34,7 +34,6 @@ if( $conn )
 				$data['SubjectName'][$index] = $row['SubjectName'];
 				$data['BookName'][$index] = $row['BookName'];
 
-				//echo "in the loop";
 
 				$index++;
 

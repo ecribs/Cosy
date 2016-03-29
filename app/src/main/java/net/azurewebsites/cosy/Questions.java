@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Questions extends ActionBarActivity {
-    TextView TVQuestion;
+    TextView TVQuestion, TVAnswer;
     EditText ETQuestion, ETAnswer;
     Button Next, Previous, SUBMIT;
     String[] questionarray;
@@ -60,12 +60,13 @@ public class Questions extends ActionBarActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
-        Log.v("It is working","in QQuestions class");
+        Log.v("It is working", "in QQuestions class");
         TVQuestion = (TextView) findViewById(R.id.TVQuestion);
         ETQuestion = (EditText) findViewById(R.id.ETQuestion);
         ETAnswer = (EditText) findViewById(R.id.ETAnswer);
         Next = (Button) findViewById(R.id.NEXT);
         SUBMIT = (Button) findViewById(R.id.QSUBMIT);
+        TVAnswer = (TextView) findViewById(R.id.TVAnswer);
 
         final Bundle extras = getIntent().getExtras();
         final int WorksheetID = extras.getInt("WorksheetID");
@@ -75,7 +76,7 @@ public class Questions extends ActionBarActivity {
         questionarray = extras.getStringArray("questionarray");
         num = 1;
 
-        if(num<amount)
+        if(num<amount+1)
         {
             TVQuestion.setText("Question: " + num + " ");
         }
@@ -86,11 +87,7 @@ public class Questions extends ActionBarActivity {
 
 
 
-        if(num>1)
-        {
-            Previous.setVisibility(View.VISIBLE);
 
-        }
 
 
 /*
@@ -122,11 +119,12 @@ public class Questions extends ActionBarActivity {
                     ETQuestion.setText(" ");
                     ETAnswer.setText(" ");
 
-                    if (num>=amount)
+                    if (num>=amount+1)
                     {
                         Next.setVisibility(View.INVISIBLE);
                         SUBMIT.setVisibility(View.VISIBLE);
                         TVQuestion.setText("COMPLETE");
+                        TVAnswer.setText("Click submit to view Worksheets");
                         ETAnswer.setVisibility(View.INVISIBLE);
                         ETQuestion.setVisibility(View.INVISIBLE);
                     }

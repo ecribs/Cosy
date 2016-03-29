@@ -11,12 +11,10 @@
         android:text="NEXT"
         android:id="@+id/NEXT"
         android:background="#5199ff"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="77dp"
         android:minHeight="100dp"
         android:maxWidth="100dp"
-        android:layout_toEndOf="@+id/TVQuestion" />
+        android:layout_below="@+id/ETAnswer"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,7 +45,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Answer"
-        android:id="@+id/textView4"
+        android:id="@+id/TVAnswer"
         android:textColor="#ffffff"
         android:layout_above="@+id/ETAnswer"
         android:layout_centerHorizontal="true"
@@ -60,7 +58,7 @@
         android:id="@+id/QSUBMIT"
         android:background="#5199ff"
         android:visibility="invisible"
-        android:layout_alignStart="@+id/textView4"
+        android:layout_alignStart="@+id/TVAnswer"
         android:maxWidth="100dp"
         android:minHeight="100dp"
         android:layout_alignTop="@+id/NEXT" />

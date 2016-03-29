@@ -3,6 +3,8 @@ package net.azurewebsites.cosy;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -10,6 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -60,6 +63,7 @@ Button Browse, image, Upload;
     String BookName;
     String imagefile;
     int num;
+    String result;
 
     private static class Data
     {
@@ -201,9 +205,11 @@ Button Browse, image, Upload;
         image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent galleryInent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryInent, RESULT_LOAD_IMAGE);
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
 
             }
 
@@ -216,7 +222,7 @@ Button Browse, image, Upload;
                 BookName = ETBookName.getText().toString();
                 String BookSubject = Subject.getSelectedItem().toString();
                 int seletctedsub =  Subject.getSelectedItemPosition();
-                imagefile = selectedImage.getPath();
+                imagefile = result;
 
                 num = SubjectID[seletctedsub];
 
@@ -362,27 +368,6 @@ Button Browse, image, Upload;
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_book, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public void getfile(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -422,7 +407,19 @@ Button Browse, image, Upload;
                 if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data !=null)
                 {
                     selectedImage = data.getData();
-                    imageToUpload.setImageURI(selectedImage);
+                    Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
+                    if (cursor == null) {
+                        result = selectedImage.getPath();
+                    } else
+                    {
+                        cursor.moveToFirst();
+                        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                        result = cursor.getString(idx);
+                        cursor.close();
+                        imageToUpload.setImageBitmap(BitmapFactory.decodeFile(result));
+
+                    }
+
 
                 }
         }
@@ -435,8 +432,7 @@ Button Browse, image, Upload;
 
 
         @Override
-        protected Void doInBackground(String... params)
-        {
+        protected Void doInBackground(String... params) {
             Log.v("uploading file", returnFile);
             FTPClient con = null;
             String file= params[0];
@@ -606,6 +602,29 @@ Button Browse, image, Upload;
         }
 
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                startActivity(homeintent);
+            default:
+                return super.onOptionsItemSelected(item);
+
+
+        }
+    }
+
 
 
 }

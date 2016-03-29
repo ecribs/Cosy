@@ -36,12 +36,23 @@ import java.util.concurrent.ExecutionException;
 
 public class TakeAttendence extends ActionBarActivity {
     ListView lv;
-    String List[] ={"Android","Windows","IOS"};
     Button btn;
     UserLocalStore userLocalStore;
     String[] Users;
     JSONObject jsonObject;
     JSONArray jsonArray;
+
+    private static class Stuff
+    {
+        String Username;
+
+
+        Stuff(String Username)
+        {
+            this.Username = Username;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -108,6 +119,17 @@ public class TakeAttendence extends ActionBarActivity {
                 {
                     if(sba.valueAt(i))
                     {
+                        Stuff params = new Stuff(Users[i]);
+                        Log.v("in loop", "posting "+Users[i]);
+
+                        try{
+                            takeattendence takeattendence = new takeattendence();
+                            takeattendence.execute(params);
+                        }catch (Exception e)
+                        {
+                            Log.v("something Wrong","can't run");
+                        }
+
                         Toast.makeText(getApplicationContext(),Users[sba.keyAt(i)], Toast.LENGTH_LONG).show();
 
                     }
@@ -225,4 +247,106 @@ public class TakeAttendence extends ActionBarActivity {
         }
 
     }
+
+    private class takeattendence extends AsyncTask<Stuff, Void, Void>
+    {
+        //ResultSet Book;
+
+        private ProgressDialog pdialog;
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.d("", "we are executing");
+            pdialog = new ProgressDialog(TakeAttendence.this);
+            pdialog.setCancelable(false);
+            pdialog.setMessage("Inserting Subject...");
+            showdialog();
+
+
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Stuff... params)
+
+        {
+            String result;
+            JSONObject jsonObject;
+            String Username = params[0].Username;
+
+            try
+            {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/takeattendence.php");
+
+
+
+                Log.v("values being posted", Username);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                nameValuePairs.add(new BasicNameValuePair( "Username", Username));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                Log.v("Posting", "here we go");
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+
+                Log.d("","got a response");
+
+                result = EntityUtils.toString(entity);
+                Log.v("",result);
+                jsonObject = new JSONObject(result);
+
+
+
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void blah)
+        {
+            hidedialog();
+
+        }
+
+
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.show();
+
+            }
+
+        }
+
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.dismiss();
+
+            }
+
+        }
+
+    }
+
+
 }

@@ -160,20 +160,36 @@ public class Worksheet extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_worksheet, menu);
+        getMenuInflater().inflate(R.menu.menu_add_home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        Intent i = new Intent(getApplicationContext(), AddWorksheet.class);
-        i.putExtra("TopicID", TopicID);
-        startActivity(i);
-        return true;
+        switch (item.getItemId())
+        {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                Log.v("go home", "home intent pressed");
+                startActivity(homeintent);
+                return true;
+
+
+            case R.id.add:
+                Intent i = new Intent(getApplicationContext(), AddWorksheet.class);
+                Log.v("go add","add intent pressed");
+
+                i.putExtra("TopicID", TopicID);
+                startActivity(i);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
-
-
         private class getWorksheet extends AsyncTask<Integer, Void, JSONObject>
     {
         private ProgressDialog pdialog;

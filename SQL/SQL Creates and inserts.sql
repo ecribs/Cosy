@@ -68,6 +68,13 @@ Create TABLE Student_Answer
 	PRIMARY KEY (WorksheetID, UserID,Question_Num)
 );
 
+Create TABLE Attendence
+(
+	A_DATE Date,
+ 	UserID INT NOT NULL Foreign KEY References Users(UserID)
+	PRIMARY KEY (A_DATE, UserID)
+);
+
 
 
 
