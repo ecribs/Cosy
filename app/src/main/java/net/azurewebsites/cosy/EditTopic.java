@@ -3,8 +3,9 @@ package net.azurewebsites.cosy;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,50 +34,59 @@ import java.util.concurrent.ExecutionException;
 
 import javax.security.auth.Subject;
 
+public class EditTopic extends ActionBarActivity {
 
-public class EditSubject extends ActionBarActivity {
-    Button BSubmit;
-    EditText ETSubject;
-    UserLocalStore userLocalStore;
-    TextView textView;
-    String SubjectName;
+    EditText ETTOPIC;
+    Button Submit;
+    String Topic;
+    int TopicID, SubjectID;
 
-
-    protected void onCreate(Bundle savedInstanceState)
+    private static class var
     {
+        int TopicID;
+        String Topics, Topic1;
 
-        userLocalStore = new UserLocalStore(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.addsubject);
-
-        Bundle subjectdata = getIntent().getExtras();
-        SubjectName = subjectdata.getString("SubjectName");
-        ETSubject = (EditText) findViewById(R.id.ETQuestion);
-
-        BSubmit = (Button) findViewById(R.id.BSubmit);
-
-        textView = (TextView) findViewById(R.id.textView);
-
-        textView.setText("What would you like to update your Subject to?");
-        ETSubject.setText(SubjectName);
-        BSubmit.setOnClickListener(new View.OnClickListener()
+        var(int TopicID, String Topics, String Topic1)
         {
-            public void onClick(View v)
-            {
-                String Subject = ETSubject.getText().toString();
+            this.TopicID = TopicID;
+            this.Topics = Topics;
+            this.Topic1 = Topic1;
 
-                try
-                {
-                    new InsertSubject().execute(Subject).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e)
-                {
-                    e.printStackTrace();
-                }
 
-                gotosubject();
+        }
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_topic);
+        Bundle Topicstuff = getIntent().getExtras();
+        TopicID = Topicstuff.getInt("TopicID");
+        Topic = Topicstuff.getString("Topic");
+        SubjectID = Topicstuff.getInt("SubjectID");
+
+        ETTOPIC = (EditText) findViewById(R.id.ETTOPIC);
+        Submit = (Button) findViewById(R.id.SUBMIT);
+        ETTOPIC.setText(Topic);
+
+        Submit.setText("Update");
+
+
+
+        Submit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                String text = String.valueOf(ETTOPIC.getText());
+
+                var params = new var(TopicID, Topic,text);
+
+                edittopic edittopic = new edittopic();
+                edittopic.execute(params);
+
+                Intent i = new Intent(getApplicationContext(), Worksheet_Topic.class);
+                i.putExtra("SubjectID", SubjectID);
+                startActivity(i);
+
 
 
             }
@@ -87,18 +96,7 @@ public class EditSubject extends ActionBarActivity {
 
     }
 
-    protected void gotosubject()
-    {
-
-        Intent WorksheetIntent = new Intent(this, worksheet_Subjects.class);
-        startActivity(WorksheetIntent);
-
-    }
-
-
-
-
-    private class InsertSubject extends AsyncTask<String, Void, Void>
+    private class edittopic extends AsyncTask<var, Void, Void>
     {
         //ResultSet Book;
 
@@ -108,7 +106,7 @@ public class EditSubject extends ActionBarActivity {
         protected void onPreExecute()
         {
             Log.d("", "we are executing");
-            pdialog = new ProgressDialog(EditSubject.this);
+            pdialog = new ProgressDialog(EditTopic.this);
             pdialog.setCancelable(false);
             pdialog.setMessage("Inserting Subject...");
             showdialog();
@@ -119,28 +117,29 @@ public class EditSubject extends ActionBarActivity {
 
 
         @Override
-        protected Void doInBackground(String... params)
+        protected Void doInBackground(var... params)
 
         {
             String result;
             JSONObject jsonObject;
-            String Subject = params[0];
 
+            int TopicID1 = params[0].TopicID;
+            String Topics = params[0].Topics;
+            String Topics1 = params[0].Topic1;
             try
             {
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/editsubject.php");
-
-                User user = userLocalStore.getLoggedInUser();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/edittopic.php");
 
 
-                String username = user.username;
-                Log.v("user logged in is:", username);
 
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                nameValuePairs.add(new BasicNameValuePair( "username", username ));
-                nameValuePairs.add(new BasicNameValuePair("Subject", Subject));
-                nameValuePairs.add(new BasicNameValuePair("SubjectName", SubjectName));
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+                nameValuePairs.add(new BasicNameValuePair( "TopicID", TopicID1+"" ));
+                nameValuePairs.add(new BasicNameValuePair( "Topic", Topics+"" ));
+                nameValuePairs.add(new BasicNameValuePair( "Topic1", Topics1+"" ));
+
+
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
                 HttpResponse response = httpclient.execute(httppost);
@@ -200,6 +199,11 @@ public class EditSubject extends ActionBarActivity {
         }
 
     }
+
+
+
+
+
 
 
     public boolean onCreateOptionsMenu(Menu menu)

@@ -123,6 +123,8 @@ public class StudentWorksheetsResponse extends ActionBarActivity
                                 Intent i = new Intent(getApplicationContext(), UserTest.class);
                                 i.putExtra("WorksheetID", WorksheetID);
                                 i.putExtra("Amount", Amount[position]);
+                                i.putExtra("Username", Users[position]);
+
                                 startActivity(i);
                             }
                         }

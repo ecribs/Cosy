@@ -41,13 +41,16 @@ public class Worksheet extends ActionBarActivity
 
     int TopicID;
     int[] WorksheetID;
+    String[] WorksheetName={""};
+    JSONObject jsonObject = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worksheet);
-        JSONObject jsonObject = null;
         JSONArray jsonArray = null;
         Bundle topicdata = getIntent().getExtras();
         TopicID = topicdata.getInt("TopicID");
@@ -66,14 +69,10 @@ public class Worksheet extends ActionBarActivity
         Log.v("temp converted","to string");
 
 
-        String[] WorksheetName={""};
+
 
         assert jsonObject != null;
-
-
-
-
-            try {
+        try {
 
                 try {
                     jsonArray = jsonObject.getJSONArray("WorksheetName");
@@ -136,7 +135,6 @@ public class Worksheet extends ActionBarActivity
         ListView WorksheetList = (ListView) findViewById(R.id.WorksheetList);
         WorksheetList.setAdapter(WorksheetAdapter);
 
-        registerForContextMenu(WorksheetList);
 
         WorksheetList.setOnItemClickListener
                 (
@@ -155,10 +153,12 @@ public class Worksheet extends ActionBarActivity
                 );
 
 
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_home, menu);
         return true;
@@ -291,28 +291,109 @@ public class Worksheet extends ActionBarActivity
     }
 
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo)
+
+
+    private class deletesubject extends AsyncTask<Integer, Void, JSONObject>
     {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Context Menu");
-        menu.add(0, v.getId(), 0, "Action 1");
-        menu.add(0, v.getId(), 0, "Action 2");
-        menu.add(0, v.getId(), 0, "Action 3");
-    }
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getTitle() == "Action 1") {
-            Toast.makeText(this, "Action 1 invoked", Toast.LENGTH_SHORT).show();
-        } else if (item.getTitle() == "Action 2") {
-            Toast.makeText(this, "Action 2 invoked", Toast.LENGTH_SHORT).show();
-        } else if (item.getTitle() == "Action 3") {
-            Toast.makeText(this, "Action 3 invoked", Toast.LENGTH_SHORT).show();
-        } else {
-            return false;
+        //ResultSet Book;
+
+        private ProgressDialog pdialog;
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.d("", "we are executing");
+            pdialog = new ProgressDialog(Worksheet.this);
+            pdialog.setCancelable(false);
+            pdialog.setMessage("Getting Subjects...");
+            showdialog();
+
+
+
         }
-        return true;
+
+
+        @Override
+        protected JSONObject doInBackground(Integer... params)
+
+        {
+            int item= params[0];
+
+
+
+
+            String result = null;
+            JSONObject jsonObject = null;
+
+            try
+            {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/deleteWorksheet.php");
+
+
+                Log.v("deleting...",item+"");
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair( "WorksheetID", item+"" ));
+
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+
+                Log.d("","got a response");
+
+                result = EntityUtils.toString(entity);
+                Log.v("",result);
+                jsonObject = new JSONObject(result);
+
+
+
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject)
+        {
+
+            hidedialog();
+        }
+
+
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.show();
+
+            }
+
+        }
+
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.dismiss();
+
+            }
+
+        }
+
     }
 
 

@@ -603,7 +603,6 @@ Button Browse, image, Upload;
 
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -613,7 +612,8 @@ Button Browse, image, Upload;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         switch (item.getItemId()) {
             case R.id.home:
                 Intent homeintent = new Intent(this, MainActivity.class);

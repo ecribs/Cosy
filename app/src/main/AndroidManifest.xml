@@ -86,6 +86,10 @@
             android:name=".TakeAttendence"
             android:label="@string/title_activity_take_attendence" >
         </activity>
+        <activity
+            android:name=".EditTopic"
+            android:label="@string/title_activity_edit_topic" >
+        </activity>
     </application>
 
 </manifest>

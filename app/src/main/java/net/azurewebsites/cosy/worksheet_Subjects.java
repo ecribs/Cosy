@@ -159,22 +159,7 @@ public class worksheet_Subjects extends ActionBarActivity
 
 
 
-        @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_worksheet__subjects, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        Intent AddSubjectIntent = new Intent(this, AddSubject.class);
-        startActivity(AddSubjectIntent);
-
-    return true;
-
-    }
 
 
         private class getSubjects extends AsyncTask<Void, Void, JSONObject>
@@ -324,8 +309,8 @@ public class worksheet_Subjects extends ActionBarActivity
                 i.putExtra("SubjectName", listitem);
                 startActivity(i);
             }
-            else if (item.getTitle() == "Action 3") {
-                Toast.makeText(this, "Action 3 invoked", Toast.LENGTH_SHORT).show();
+            else if (item.getTitle() == "Cancel") {
+                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             } else {
                 return false;
             }
@@ -435,6 +420,40 @@ public class worksheet_Subjects extends ActionBarActivity
 
                 }
 
+            }
+
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu)
+        {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_add_home, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item)
+        {
+            switch (item.getItemId())
+            {
+                case R.id.home:
+                    Intent homeintent = new Intent(this, MainActivity.class);
+                    Log.v("go home", "home intent pressed");
+                    startActivity(homeintent);
+                    return true;
+
+
+                case R.id.add:
+                    Intent i = new Intent(getApplicationContext(), AddSubject.class);
+                    Log.v("go add","add intent pressed");
+
+                    startActivity(i);
+                    return true;
+
+
+                default:
+                    return super.onOptionsItemSelected(item);
             }
 
         }

@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ public class UserTest extends ActionBarActivity
     String[] Question, Answer,StudentAnswer;
     UserLocalStore userLocalStore;
     int score=0;
+    String Username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,6 +66,7 @@ public class UserTest extends ActionBarActivity
         Bundle subjectdata = getIntent().getExtras();
         Amount = subjectdata.getInt("Amount");
         WorksheetID = subjectdata.getInt("WorksheetID");
+        Username = subjectdata.getString("Username");
 
         updatedisplay();
 
@@ -264,11 +269,10 @@ public class UserTest extends ActionBarActivity
                 User user = userLocalStore.getLoggedInUser();
 
 
-                String username = user.username;
-                Log.v("user logged in is:",username);
+                Log.v("user logged in is:",Username);
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-                nameValuePairs.add(new BasicNameValuePair( "Username", username ));
+                nameValuePairs.add(new BasicNameValuePair( "Username", Username ));
                 nameValuePairs.add(new BasicNameValuePair( "WorksheetID", WorksheetID+"" ));
                 nameValuePairs.add(new BasicNameValuePair( "Question_Num", Question_Num+"" ));
 
@@ -332,6 +336,31 @@ public class UserTest extends ActionBarActivity
         }
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
+        User user = userLocalStore.getLoggedInUser();
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+            return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                startActivity(homeintent);
+            default:
+                return super.onOptionsItemSelected(item);
+
+
+        }
+    }
+
 
 
 

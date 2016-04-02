@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -37,6 +39,7 @@ public class Worksheet_Topic extends ActionBarActivity {
     UserLocalStore userLocalStore;
     int SubjectID;
     int[] TopicID;
+    String[] Topic = {""};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,6 @@ public class Worksheet_Topic extends ActionBarActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        String[] Topic = {""};
         String nothing ="Nothing To Display";
 
 try {
@@ -145,30 +147,187 @@ catch (Exception e)
 
 
 
-
+        registerForContextMenu(TopicList);
 
 
     }
 
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_worksheet__topic, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo)
     {
-        Intent i = new Intent(getApplicationContext(), AddTopic.class);
-        i.putExtra("SubjectID", SubjectID);
-        startActivity(i);
 
+        if (v.getId()==R.id.TopicList)
+        {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            menu.setHeaderTitle(Topic[info.position]);
+
+
+            menu.add(0, v.getId(), 0, "Edit");
+            menu.add(0, v.getId(), 0, "Delete");
+            menu.add(0, v.getId(), 0, "Cancel");
+        }
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int listitem=  TopicID[info.position];
+        int num = info.position;
+
+        if (item.getTitle() == "Delete") {
+            try
+            {
+
+                JSONObject jsonObject = new deletesubject().execute(listitem).get();
+
+
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e)
+            {
+                e.printStackTrace();
+            }
+
+            Intent i = new Intent(getApplicationContext(), Worksheet_Topic.class);
+            i.putExtra("SubjectID", SubjectID);
+            startActivity(i);
+
+        }
+        else if (item.getTitle() == "Edit")
+        {
+            Log.v("Button clicked:","Edit");
+        Intent intent = new Intent(this, EditTopic.class);
+        Bundle extras = new Bundle();
+        extras.putInt("TopicID", listitem);
+        extras.putInt("Topic", TopicID[num]);
+            extras.putInt("SubjectID",SubjectID);
+            Log.v("Passing through",listitem + TopicID[num] + "");
+
+
+        intent.putExtras(extras);
+        startActivity(intent);
+
+        }
+        else if (item.getTitle() == "Cancel") {
+            Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
+        } else {
+            return false;
+        }
         return true;
+    }
+
+
+    private class deletesubject extends AsyncTask<Integer, Void, JSONObject>
+    {
+        //ResultSet Book;
+
+        private ProgressDialog pdialog;
+
+        @Override
+        protected void onPreExecute()
+        {
+            Log.d("", "we are executing");
+            pdialog = new ProgressDialog(Worksheet_Topic.this);
+            pdialog.setCancelable(false);
+            pdialog.setMessage("Getting Subjects...");
+            showdialog();
+
+
+
+        }
+
+
+        @Override
+        protected JSONObject doInBackground(Integer... params)
+
+        {
+            int item= params[0];
+            User user = userLocalStore.getLoggedInUser();
+            String username = user.username;
+
+
+            Log.v("Deleting...",item+ "");
+            String result = null;
+            JSONObject jsonObject = null;
+
+            try
+            {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://cosy.azurewebsites.net/deletetopic.php");
+
+
+
+                Log.v("user logged in is:", username);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                nameValuePairs.add(new BasicNameValuePair( "TopicID", item+"" ));
+
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+
+                Log.d("","got a response");
+
+                result = EntityUtils.toString(entity);
+                Log.v("",result);
+                jsonObject = new JSONObject(result);
+
+
+
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject)
+        {
+
+            hidedialog();
+        }
+
+
+
+        protected void showdialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.show();
+
+            }
+
+        }
+
+        private void hidedialog()
+        {
+            if(pdialog.isShowing())
+            {
+                pdialog.dismiss();
+
+            }
+
+        }
 
     }
+
+
+
+
 
     private class getTopic extends AsyncTask<Integer, Void, JSONObject>
     {
@@ -269,6 +428,41 @@ catch (Exception e)
 
             }
 
+        }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add_home, menu);
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                Log.v("go home", "home intent pressed");
+                startActivity(homeintent);
+                return true;
+
+
+            case R.id.add:
+                Intent i = new Intent(getApplicationContext(), AddTopic.class);
+                i.putExtra("SubjectID", SubjectID);
+                startActivity(i);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
     }

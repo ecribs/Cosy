@@ -78,7 +78,7 @@ public class Questions extends ActionBarActivity {
 
         if(num<amount+1)
         {
-            TVQuestion.setText("Question: " + num + " ");
+            TVQuestion.setText("Question: " + num + "");
         }
 
 
@@ -116,8 +116,8 @@ public class Questions extends ActionBarActivity {
                     InsertQuestion.execute(params);
                     num++;
                     Log.v("num:", num + "");
-                    ETQuestion.setText(" ");
-                    ETAnswer.setText(" ");
+                    ETQuestion.setText("");
+                    ETAnswer.setText("");
 
                     if (num>=amount+1)
                     {
@@ -128,8 +128,8 @@ public class Questions extends ActionBarActivity {
                         ETAnswer.setVisibility(View.INVISIBLE);
                         ETQuestion.setVisibility(View.INVISIBLE);
                     }
-                    if(num<amount)
-                    TVQuestion.setText("Question: " +num + " ");
+                    if(num<amount+1)
+                    TVQuestion.setText("Question: " +num + "");
 
 
                 }

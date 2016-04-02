@@ -79,7 +79,8 @@ public class BookAdapter extends ArrayAdapter<String>
         return convertView;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
+    {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
@@ -105,6 +106,12 @@ public class BookAdapter extends ArrayAdapter<String>
 
 
     }
+
+
+
+
+
+
 
 
 

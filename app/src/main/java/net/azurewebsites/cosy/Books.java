@@ -257,23 +257,38 @@ public class Books extends Activity
     }
 
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_books, menu);
+        getMenuInflater().inflate(R.menu.menu_add_home, menu);
         return true;
     }
 
-
-
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int TopicID = 5;
-        Intent i = new Intent(getApplicationContext(), AddBook.class);
-        startActivity(i);
+        switch (item.getItemId())
+        {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                Log.v("go home", "home intent pressed");
+                startActivity(homeintent);
+                return true;
 
-        return true;
 
+            case R.id.add:
+                Intent i = new Intent(getApplicationContext(), AddBook.class);
+                Log.v("go add","add intent pressed");
+
+
+                startActivity(i);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 

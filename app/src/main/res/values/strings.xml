@@ -24,4 +24,5 @@
     <string name="title_activity_student_worksheets_response">StudentWorksheetsResponse</string>
     <string name="title_activity_user_test">UserTest</string>
     <string name="title_activity_take_attendence">TakeAttendence</string>
+    <string name="title_activity_edit_topic">EditTopic</string>
 </resources>

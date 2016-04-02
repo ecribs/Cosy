@@ -77,7 +77,7 @@ public class StudentWorksheet extends ActionBarActivity {
                 InsertAnswer InsertAnswer = new InsertAnswer();
                 InsertAnswer.execute();
 
-                ETAnswer.setText(" ");
+                ETAnswer.setText("");
 
                 QuestionNum++;
 

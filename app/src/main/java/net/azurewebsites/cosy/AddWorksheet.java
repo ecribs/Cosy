@@ -1,13 +1,19 @@
 package net.azurewebsites.cosy;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -27,8 +33,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class AddWorksheet extends ActionBarActivity
@@ -41,16 +50,17 @@ public class AddWorksheet extends ActionBarActivity
     JSONArray jsonArray = null;
     int[] WorksheetID;
 
+    Calendar myCalendar = Calendar.getInstance();
 
 
     private static class Stuff
     {
         String WorksheetName, W_Type;
         int Num_Q, TopicID,WorksheetID;
-        Date W_Date;
+        String W_Date;
 
 
-        Stuff(String WorksheetName,String W_Type, int Num_Q, int TopicID, Date W_Date, int WorksheetID )
+        Stuff(String WorksheetName,String W_Type, int Num_Q, int TopicID, String W_Date, int WorksheetID )
         {
             this.WorksheetName = WorksheetName;
             this.W_Type = W_Type;
@@ -80,17 +90,14 @@ public class AddWorksheet extends ActionBarActivity
         Log.v("got this far", "");
 
         SUBMIT.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String WorkshetName = ETWorksheetName.getText().toString();
                 int Num_Q = Integer.parseInt(ETNum_Q.getText().toString());
-                Date W_Date = Date.valueOf(ETDate.getText().toString());
+                String W_Date =  ETDate.getText().toString();
                 String W_Type = SQ_Type.getSelectedItem().toString();
 
 
-
-
-                Stuff params = new Stuff(WorkshetName, W_Type, Num_Q, TopicID, W_Date,0);
+                Stuff params = new Stuff(WorkshetName, W_Type, Num_Q, TopicID, W_Date, 0);
 
 
                 try {
@@ -120,8 +127,7 @@ public class AddWorksheet extends ActionBarActivity
 
                         }
                     }
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     Log.v("nothing", "nothing");
                 }
 
@@ -132,6 +138,18 @@ public class AddWorksheet extends ActionBarActivity
 
             }
 
+        });
+
+        ETDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v)
+            {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(AddWorksheet.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
         });
 
 
@@ -190,7 +208,7 @@ public class AddWorksheet extends ActionBarActivity
             String W_Type = params[0].W_Type;
             int TopicID = params[0].TopicID;
             int Num_Q = params[0].Num_Q;
-            Date W_Date = params[0].W_Date;
+            String W_Date = params[0].W_Date;
             try
             {
                 HttpClient httpclient = new DefaultHttpClient();
@@ -271,6 +289,57 @@ public class AddWorksheet extends ActionBarActivity
         }
 
     }
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
+    {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth)
+        {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel()
+    {
+
+        String myFormat = "yyyy/MM/dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
+        ETDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+
+
+
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.home:
+                Intent homeintent = new Intent(this, MainActivity.class);
+                startActivity(homeintent);
+            default:
+                return super.onOptionsItemSelected(item);
+
+
+        }
+    }
+
 
 
 }

@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="net.azurewebsites.cosy.Books">
-    <item android:id="@+id/title_activity_books" android:title="ADDBOOK"
-        android:icon="@drawable/ic_add_circle_white_24dp"
-
-        android:orderInCategory="100" app:showAsAction="always" />
-</menu>
